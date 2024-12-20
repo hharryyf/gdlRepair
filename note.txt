@@ -1,0 +1,38 @@
+Topic: minimal changes to GDL such that a single/two player game is strongly winnable
+
+1. the format of GDL
+
+- only contains GDL keywords and the following types of rules.
+
+init. 
+
+legal :- 0+ many true/not true
+
+next :- 0+ many true/not true, 0+ many does/not does
+
+goal :- arbitary body
+
+terminal :- arbitary body 
+
+- must be grounded?
+
+
+2. what are the allowed repairs?
+
+legal :- 0+ many true/not true
+
+next :- 0+ many true/not true, 0+ many does/not does
+
+delete from the body of a rule 
+add true/does to the body of a rule 
+add a new rule
+delete a rule
+
+
+3. how to measure the cost?
+
+1) weighted sum of the changes
+    - single player case good
+    - multiplayer case is bad, probably no solver 
+2) set a limit for each of the 4 repairs, get a repair that is not exceeding the limits 
+
