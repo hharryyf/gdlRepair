@@ -50,7 +50,7 @@ goal(p, 0, T) :- not goal(p, 100, T), tdom(T).
 % :- pos_a(39, R, A1), pos_a(39, R, A2), A1 != A2.
 
 
-rule(1..6).
+rule(1..7).
 old_rule(1..6).
 legal_rule(1..2).
 

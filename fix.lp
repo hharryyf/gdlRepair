@@ -39,10 +39,13 @@ true(F, T + 1) :- tdom(T), head(I, F), activated_f(I, P, F, T) : base(F), polar(
 1 {dummy(I) ; head(I, R, A) : input(R, A)} 1:- rule(I), legal_rule(I).
 1 {dummy(I) ; head(I, F) : base(F)} 1:- rule(I), not legal_rule(I).
 % a new rule cannot have an empty head
-:- rule(I), not old_rule(I), dummy(I).
+% new rules with dummy head should not contain
+:- dummy(I), not old_rule(I), fluent(I, P, F).
+:- dummy(I), not old_rule(I), act(I, P, R, A).
+:- dummy(I), legal_rule(I).
 
 % remove head
-remove_head(I) :- dummy(I).
+remove_head(I) :- dummy(I), old_rule(I).
 remove_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), R1 != R2.
 remove_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), A1 != A2.
 remove_head(I) :- head(I, F1), original_head(I, F2), old_rule(I), F1 != F2.
