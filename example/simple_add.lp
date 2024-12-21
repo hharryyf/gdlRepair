@@ -55,25 +55,28 @@ old_rule(1..6).
 legal_rule(1..2).
 
 
-original_head(1, p, left).
-original_head(2, p, right).
-original_head(3, round(1)).
-original_head(4, s1).
-original_head(5, s3).
+original_head(1, p, left). original_body(1, pos, round(0)).
+
+original_head(2, p, right). original_body(2, pos, round(0)).
+
+original_head(3, round(1)). original_body(3, pos, round(0)).
+
+original_head(4, s1). original_body(4, pos, p, left).
+
+original_head(5, s3). original_body(5, pos, p, left).
+
 original_head(6, s2).
 
-original_body(1, pos, round(0)).
-original_body(2, pos, round(0)).
-original_body(3, pos, round(0)).
-original_body(4, pos, p, left).
-original_body(5, pos, p, left).
 
-head(I, R, A) :- original_head(I, R, A).
-head(I, F) :- original_head(I, F).
+% head(I, R, A) :- original_head(I, R, A).
+% head(I, F) :- original_head(I, F).
 
-{add_body(I, P, R, A) : rule(I), input(R, A), polar(P) ; remove_body(I, P, R, A) : polar(P), rule(I), input(R, A) ; 
-add_body(I, P, F) : rule(I), base(F), polar(P) ; remove_body(I, P, F) : polar(P), rule(I), base(F)} 1.
+{add_body(I, P, R, A) : rule(I), input(R, A), polar(P) ; 
+remove_body(I, P, R, A) : polar(P), rule(I), input(R, A) ; 
+add_body(I, P, F) : rule(I), base(F), polar(P) ; 
+remove_body(I, P, F) : polar(P), rule(I), base(F)} 0.
 
+{add_head(I) : rule(I) ; remove_head(I) : rule(I)} 1.
 
 
 
@@ -102,3 +105,5 @@ add_body(I, P, F) : rule(I), base(F), polar(P) ; remove_body(I, P, F) : polar(P)
 #show add_body/4.
 #show remove_body/3.
 #show remove_body/4.
+#show remove_head/1.
+#show add_head/1.
