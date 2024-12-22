@@ -43,6 +43,7 @@ true(F, T + 1) :- tdom(T), head(I, F), activated_f(I, P, F, T) : base(F), polar(
 :- dummy(I), not old_rule(I), fluent(I, P, F).
 :- dummy(I), not old_rule(I), act(I, P, R, A).
 :- dummy(I), legal_rule(I).
+dummy(I + 1) :- dummy(I), not old_rule(I), rule(I + 1), rule(I). 
 
 % remove head
 remove_head(I) :- dummy(I), old_rule(I).
