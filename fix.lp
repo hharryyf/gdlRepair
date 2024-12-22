@@ -7,15 +7,6 @@ polar(pos;neg).
 :- act(I, pos, R, A1), act(I, neg, R, A2).
 :- act(I, pos, R, A1), act(I, pos, R, A2), A1 != A2.
 
-
-activated_f(I, pos, F, T) :- fluent(I, pos, F), true(F, T), tdom(T), base(F), rule(I).
-activated_f(I, neg, F, T) :- fluent(I, neg, F), not true(F, T), tdom(T), base(F), rule(I).
-activated_f(I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P).
-
-activated_a(I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, T), tdom(T), input(R, A), rule(I).
-activated_a(I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, T), tdom(T), input(R, A), rule(I).
-activated_a(I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P).
-
 % remove from the body
 remove_body(I, P, F) :- original_body(I, P, F), not fluent(I, P, F), base(F), rule(I), polar(P).
 remove_body(I, P, R, A) :- original_body(I, P, R, A), not act(I, P, R, A), rule(I), input(R, A), polar(P).
@@ -28,10 +19,6 @@ add_body(I, P, R, A) :- not original_body(I, P, R, A), act(I, P, R, A), rule(I),
 :- rule(I), not old_rule(I), remove_body(I, P, F).
 :- rule(I), not old_rule(I), remove_body(I, P, R, A).
 
-% generate the legal rule and the next rule
-legal(R, A, T) :- tdom(T), head(I, R, A), activated_f(I, P, F, T) : base(F), polar(P).
-               
-true(F, T + 1) :- tdom(T), head(I, F), activated_f(I, P, F, T) : base(F), polar(P) ; activated_a(I, P, R, A, T) : input(R, A), polar(P).
 
 % any new rule can be either a legal rule or a next rule
 {legal_rule(I)} :- rule(I), not old_rule(I).
@@ -58,3 +45,17 @@ add_head(I) :- head(I, F1), original_head(I, F2), old_rule(I), F1 != F2.
 add_head(I) :- rule(I), not old_rule(I), head(I, R, A).
 add_head(I) :- rule(I), not old_rule(I), head(I, F).
 
+% we have fixed all the rules
+% activated
+activated_f(I, pos, F, T) :- fluent(I, pos, F), true(F, T), tdom(T), base(F), rule(I).
+activated_f(I, neg, F, T) :- fluent(I, neg, F), not true(F, T), tdom(T), base(F), rule(I).
+activated_f(I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P).
+
+activated_a(I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, T), tdom(T), input(R, A), rule(I).
+activated_a(I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, T), tdom(T), input(R, A), rule(I).
+activated_a(I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P).
+
+% generate the legal rule and the next rule
+legal(R, A, T) :- tdom(T), head(I, R, A), activated_f(I, P, F, T) : base(F), polar(P).
+               
+true(F, T + 1) :- tdom(T), head(I, F), activated_f(I, P, F, T) : base(F), polar(P) ; activated_a(I, P, R, A, T) : input(R, A), polar(P).
