@@ -7,7 +7,8 @@ base(s2).
 base(s3).
 base(round(0..1)).
 
-true(round(0), 1).
+% true(round(0), 1).
+init(round(0)).
 role(p).
 
 %%%%% part we can change  %%%%
@@ -74,7 +75,7 @@ original_head(6, s2).
 {add_body(I, P, R, A) : rule(I), input(R, A), polar(P) ; 
 remove_body(I, P, R, A) : polar(P), rule(I), input(R, A) ; 
 add_body(I, P, F) : rule(I), base(F), polar(P) ; 
-remove_body(I, P, F) : polar(P), rule(I), base(F)} 1.
+remove_body(I, P, F) : polar(P), rule(I), base(F)} 0.
 
 {add_head(I) : rule(I) ; remove_head(I) : rule(I)} 1.
 
@@ -107,3 +108,5 @@ remove_body(I, P, F) : polar(P), rule(I), base(F)} 1.
 #show remove_body/4.
 #show remove_head/1.
 #show add_head/1.
+#show head/3.
+#show head/2.

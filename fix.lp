@@ -23,8 +23,8 @@ add_body(I, P, R, A) :- not original_body(I, P, R, A), act(I, P, R, A), rule(I),
 % any new rule can be either a legal rule or a next rule
 {legal_rule(I)} :- rule(I), not old_rule(I).
 % generate head
-1 {dummy(I) ; head(I, R, A) : input(R, A)} 1:- rule(I), legal_rule(I).
-1 {dummy(I) ; head(I, F) : base(F)} 1:- rule(I), not legal_rule(I).
+1 {dummy(I) ; head(I, R, A) : input(R, A)} 1 :- rule(I), legal_rule(I).
+1 {dummy(I) ; head(I, F) : base(F)} 1 :- rule(I), not legal_rule(I).
 % a new rule cannot have an empty head
 % new rules with dummy head should not contain
 :- dummy(I), not old_rule(I), fluent(I, P, F).
@@ -56,6 +56,10 @@ activated_a(I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, T), tdom(T), i
 activated_a(I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P).
 
 % generate the legal rule and the next rule
-legal(R, A, T) :- tdom(T), head(I, R, A), activated_f(I, P, F, T) : base(F), polar(P).
+legal(R, A, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), activated_f(I, P, F, T) : base(F), polar(P).
                
-true(F, T + 1) :- tdom(T), head(I, F), activated_f(I, P, F, T) : base(F), polar(P) ; activated_a(I, P, R, A, T) : input(R, A), polar(P).
+true(F, T + 1) :- rule(I), tdom(T), head(I, F),  activated_f(I, P, F1, T) : base(F1), polar(P) ;  activated_a(I, P, R, A, T) : input(R, A), polar(P).
+
+% init
+% true(round(1), 1).
+true(F, 1) :- init(F), base(F).
