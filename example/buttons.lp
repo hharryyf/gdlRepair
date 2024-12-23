@@ -49,16 +49,16 @@ remove_body(I, P, F) : polar(P), rule(I), base(F)} 0.
 
 %%%%%%%%%%%%%%%%%%%%%%%% goal and terminal
 
-goal(robot, 100, T) :- true(p, T), true(q, T), true(r, T), tdom(T).
-goal(robot, 0, T) :- not true(p, T), tdom(T).
-goal(robot, 0, T) :- not true(q, T), tdom(T).
-goal(robot, 0, T) :- not true(r, T), tdom(T).
+goal(robot, 100, J, T) :- true(p, J, T), true(q, J, T), true(r, J, T), tdom(T), program(J).
+goal(robot, 0, J, T) :- not true(p, J, T), tdom(T), program(J).
+goal(robot, 0, J, T) :- not true(q, J, T), tdom(T), program(J).
+goal(robot, 0, J, T) :- not true(r, J, T), tdom(T), program(J).
 
 
-terminal(T) :- true(p, T), true(q, T), true(r, T), tdom(T).
-terminal(T) :- true(round(7), T), tdom(T).
+terminal(J, T) :- true(p, J, T), true(q, J, T), true(r, J, T), tdom(T), program(J).
+terminal(J, T) :- true(round(7), J, T), tdom(T), program(J).
 
-#show does/3.
+#show does/4.
 #show head/3.
 #show head/2.
 #show dummy/1.

@@ -47,19 +47,19 @@ add_head(I) :- rule(I), not old_rule(I), head(I, F).
 
 % we have fixed all the rules
 % activated
-activated_f(I, pos, F, T) :- fluent(I, pos, F), true(F, T), tdom(T), base(F), rule(I).
-activated_f(I, neg, F, T) :- fluent(I, neg, F), not true(F, T), tdom(T), base(F), rule(I).
-activated_f(I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P).
+activated_f(J, I, pos, F, T) :- fluent(I, pos, F), true(F, J, T), tdom(T), base(F), rule(I), program(J).
+activated_f(J, I, neg, F, T) :- fluent(I, neg, F), not true(F, J, T), tdom(T), base(F), rule(I), program(J).
+activated_f(J, I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P), program(J).
 
-activated_a(I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, T), tdom(T), input(R, A), rule(I).
-activated_a(I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, T), tdom(T), input(R, A), rule(I).
-activated_a(I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P).
+activated_a(J, I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
+activated_a(J, I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
+activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P), program(J).
 
 % generate the legal rule and the next rule
-legal(R, A, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), activated_f(I, P, F, T) : base(F), polar(P).
+legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), activated_f(J, I, P, F, T) : base(F), polar(P).
                
-true(F, T + 1) :- rule(I), tdom(T), head(I, F),  activated_f(I, P, F1, T) : base(F1), polar(P) ;  activated_a(I, P, R, A, T) : input(R, A), polar(P).
+true(F, J, T + 1) :- rule(I), tdom(T), head(I, F),  program(J), activated_f(J, I, P, F1, T) : base(F1), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
 % true(round(1), 1).
-true(F, 1) :- init(F), base(F).
+true(F, J, 1) :- init(F), base(F), program(J).
