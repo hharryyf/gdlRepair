@@ -58,16 +58,3 @@ goal(robot, 0, J, T) :- not true(r, J, T), tdom(T), program(J).
 terminal(J, T) :- true(p, J, T), true(q, J, T), true(r, J, T), tdom(T), program(J).
 terminal(J, T) :- true(round(7), J, T), tdom(T), program(J).
 
-#show does/4.
-#show head/3.
-#show head/2.
-#show dummy/1.
-% #show true/2.
-#show add_body/3.
-#show add_body/4.
-#show remove_body/3.
-#show remove_body/4.
-#show remove_head/1.
-#show add_head/1.
-#show fluent/3.
-#show act/4.

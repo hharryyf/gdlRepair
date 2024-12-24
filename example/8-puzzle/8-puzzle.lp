@@ -1605,10 +1605,3 @@ goal(player, 0, J, T) :- not goal(player, 100, J, T), tdom(T), program(J).
 terminal(J, T) :- goal(player, 100, J, T), program(J), tdom(T).
 terminal(J, T) :- true(step(15), J, T), program(J), tdom(T).
 
-#show does/4.
-#show add_body/3.
-#show add_body/4.
-#show remove_body/3.
-#show remove_body/4.
-#show remove_head/1.
-#show add_head/1.
