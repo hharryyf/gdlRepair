@@ -63,3 +63,11 @@ true(F, J, T + 1) :- rule(I), tdom(T), head(I, F),  program(J), activated_f(J, I
 % init
 % true(round(1), 1).
 true(F, J, 1) :- init(F), base(F), program(J).
+
+#show does/4.
+#show add_body/3.
+#show add_body/4.
+#show remove_body/3.
+#show remove_body/4.
+#show add_head/1.
+#show dummy/1.

@@ -17,10 +17,5 @@ terminated(J, T+1) :- terminated(J, T), tdom(T), program(J).
 :- terminated(2, T), not terminated(2, T - 1), not goal(oplayer, 100, 2, T).
 :- terminated(2, 1), not goal(oplayer, 100, 2, 1).
 
-#show does/4.
-#show add_body/3.
-#show add_body/4.
-#show remove_body/3.
-#show remove_body/4.
-#show remove_head/1.
-#show add_head/1.
+
+% #show new_head(I,F) : add_head(I), head(I,F).
