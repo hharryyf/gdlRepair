@@ -80,7 +80,7 @@ original_head(58, cell(3,3,o)). original_body(58, pos, cell(3,3,o)).
 legal_rule(1..20).
 old_rule(1..58).
 rule(1..58).
-empty(J,T) :- not true(cell(X,Y,P), J, T), base(cell(X,Y,P)), program(J), tdom(T).
+empty(J,T) :- not true(cell(X,Y,x), J, T), base(cell(X,Y,x)), not true(cell(X,Y,o),J,T), base(cell(X,Y,o)), program(J), tdom(T).
 terminal(J,T) :- not empty(J,T), program(J), tdom(T).
 goal(xplayer, 50, J, T) :- not empty(J,T), program(J), tdom(T), not goal(xplayer, 100, J, T), not goal(oplayer, 100, J, T).
 goal(oplayer, 50, J, T) :- not empty(J,T), program(J), tdom(T), not goal(xplayer, 100, J, T), not goal(oplayer, 100, J, T).

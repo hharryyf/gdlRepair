@@ -89,7 +89,7 @@ print(f'legal_rule(1..{legal}).')
 print(f'old_rule(1..{rid-1}).')
 print(f'rule(1..{rid-1}).')
 
-print('empty(J,T) :- not true(cell(X,Y,P), J, T), base(cell(X,Y,P)), program(J), tdom(T).')
+print('empty(J,T) :- not true(cell(X,Y,x), J, T), base(cell(X,Y,x)), not true(cell(X,Y,o),J,T), base(cell(X,Y,o)), program(J), tdom(T).')
 
 print('terminal(J,T) :- not empty(J,T), program(J), tdom(T).')
 
