@@ -69,7 +69,11 @@ print_next_rule('control(oplayer)', ['+f control(xplayer)'])
 for i in range(1, 4):
     for j in range(1, 4):
         print_next_rule(f'cell({i},{j},x)', [f'+d xplayer|mark({i},{j})', f'+f cell({i},{j},b)'])
-        print_next_rule(f'cell({i},{j},x)', [f'+d oplayer|mark({i},{j})', f'+f cell({i},{j},b)']) # here's the bug
+        if (i == 1 and j == 1):
+            print_next_rule(f'cell({i},{j},o)', [f'+d oplayer|mark({i},{j})', f'+f cell({i},{j},b)']) # here's the bug
+        else:
+            print_next_rule(f'cell({i},{j},x)', [f'+d oplayer|mark({i},{j})', f'+f cell({i},{j},b)']) # here's the bug
+         
         print_next_rule(f'cell({i},{j},x)', [f'+f cell({i},{j},x)'])
         print_next_rule(f'cell({i},{j},o)', [f'+f cell({i},{j},o)'])
 
