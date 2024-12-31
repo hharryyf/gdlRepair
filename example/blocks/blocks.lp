@@ -55,6 +55,13 @@ original_head(8, robot, u(a,b)). original_body(8, pos, clear(a)). original_body(
 original_head(9, robot, u(a,c)). original_body(9, pos, clear(a)). original_body(9, pos, on(a,c)). 
 original_head(10, robot, u(b,a)). original_body(10, pos, clear(b)). original_body(10, pos, on(b,a)). 
 original_head(11, robot, u(b,b)). original_body(11, pos, clear(b)). original_body(11, pos, on(b,b)). 
+% bad rules
+% original_head(12, robot, u(b,b)). original_body(12, pos, clear(b)). original_body(12, pos, on(b,b)). 
+% original_head(13, robot, u(b,b)). original_body(13, pos, clear(b)). original_body(13, pos, on(b,b)). 
+% original
+% original_head(12, robot, u(b,c)). original_body(12, pos, clear(b)). original_body(12, pos, on(b,c)).  
+% original_head(13, robot, u(c,a)). original_body(13, pos, clear(c)). original_body(13, pos, on(c,a)). 
+% bad rules
 original_head(12, robot, u(b,c)). original_body(12, pos, clear(b)). original_body(12, pos, on(b,c)). original_body(12, neg, on(b,c)).  
 original_head(13, robot, u(c,a)). original_body(13, pos, clear(c)). original_body(13, pos, on(c,a)). original_body(13, neg, on(c,a)). 
 original_head(14, robot, u(c,b)). original_body(14, pos, clear(c)). original_body(14, pos, on(c,b)). 

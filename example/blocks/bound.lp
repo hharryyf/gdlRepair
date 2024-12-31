@@ -22,8 +22,8 @@
 % :~ remove_body(I, P, R, A). [100, I, P, R, A,remove]
 % :~ remove_body(I, P, F), not legal_rule(I). [100,I,P,F,remove_next]
 % :~ remove_body(I, P, F), legal_rule(I). [1,I,P,F,remove_legal]
-% :~ add_head(I,F). [100,I,F,add_head]
+% :~ add_head(I,F). [1,I,F,add_head]
 % :~ add_head(I,R,A). [100,I,R,A,add_head]
-% :~ remove_head(I). [100,I,remove]
+% :~ remove_head(I). [1,I,remove]
 
 % clingo --opt-mode=opt,8  construct-2.lp example/tic-tac-toe/tic-tac-toe-9-x.lp example/tic-tac-toe/bound.lp example/tic-tac-toe/win.lp 
