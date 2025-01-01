@@ -11,9 +11,9 @@
 :~ add_body(I, P, F). [1,I,P,F,add]
 :~ remove_body(I, P, R, A). [1, I, P, R, A,remove]
 :~ remove_body(I, P, F). [1,I,P,F,remove]
-:~ add_head(I,F). [1,I,F,add_head]
-:~ add_head(I,R,A). [1,I,R,A,add_head]
-:~ remove_head(I). [1,I,remove]
+:~ add_head(I,F). [100,I,F,add_head]
+:~ add_head(I,R,A). [100,I,R,A,add_head]
+:~ remove_head(I). [100,I,remove]
 
 
 % :~ add_body(I, P, R, A). [100,I,P,R,A,add]

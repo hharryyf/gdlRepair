@@ -9,15 +9,6 @@ input(xplayer, mark(1..3,1..3)).
 input(oplayer, mark(1..3,1..3)).
 input(xplayer, noop).
 input(oplayer, noop).
-init(cell(1,1,b)).
-init(cell(1,2,b)).
-init(cell(1,3,b)).
-init(cell(2,1,b)).
-init(cell(2,2,b)).
-init(cell(2,3,b)).
-init(cell(3,1,b)).
-init(cell(3,2,b)).
-init(cell(3,3,b)).
 init(control(xplayer)).
 original_head(1, xplayer, noop). original_body(1, pos, control(oplayer)). 
 original_head(2, oplayer, noop). original_body(2, pos, control(xplayer)). 

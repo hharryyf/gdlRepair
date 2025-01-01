@@ -53,7 +53,7 @@ activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule
 % generate the legal rule and the next rule
 legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), activated_f(J, I, P, F, T) : base(F), polar(P).
                
-true(F, J, T + 1) :- rule(I), tdom(T), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
+true(F, J, T + 1) :- rule(I), tdom(T), tdom(T+1), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
 % true(round(1), 1).

@@ -17,26 +17,28 @@ add_body(I, P, R, A) :- not original_body(I, P, R, A), act(I, P, R, A), rule(I),
 
 % any new rule can be either a legal rule or a next rule
 {legal_rule(I)} :- rule(I), not old_rule(I).
-% generate head
-1 {dummy(I) ; head(I, R, A) : input(R, A)} 1 :- rule(I), legal_rule(I).
-1 {dummy(I) ; head(I, F) : base(F)} 1 :- rule(I), not legal_rule(I).
-% a new rule cannot have an empty head
-% new rules with dummy head should not contain
+% generate head for old rules
+1 {keep_head(I) ; update_head(I); dummy(I)} 1 :- old_rule(I).
+% generate head for new rules
+1 {dummy(I) ; add_head(I, F) : base(F)} 1 :- rule(I), not old_rule(I), not legal_rule(I).
+1 {dummy(I) ; add_head(I, R, A) : input(R, A)} 1 :- rule(I), not old_rule(I), legal_rule(I).
+head(I, R, A) :- keep_head(I), original_head(I, R, A).
+head(I, F) :- keep_head(I), original_head(I, F).
+% updated version should have a new head
+1 {add_head(I, R, A) : input(R, A)} 1 :- update_head(I), legal_rule(I), old_rule(I).
+1 {add_head(I, F) : base(F)} 1 :- update_head(I), not legal_rule(I), old_rule(I).
+% add head should "change" the head
+% add head -> new head
+head(I, R, A) :- add_head(I, R, A).
+head(I, F) :- add_head(I, F).
+% update meand remove + add
+remove_head(I) :- update_head(I).
+% only remove without add
+remove_head(I) :- dummy(I), old_rule(I).
+% new rules, dummy should be consecutive
+dummy(I + 1) :- dummy(I), not old_rule(I), rule(I + 1), rule(I). 
 :- dummy(I), not old_rule(I), fluent(I, P, F).
 :- dummy(I), not old_rule(I), act(I, P, R, A).
-:- dummy(I), legal_rule(I), not old_rule(I).
-dummy(I + 1) :- dummy(I), not old_rule(I), rule(I + 1), rule(I). 
-
-
-add_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), R1 != R2.
-add_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), A1 != A2.
-add_head(I) :- head(I, F1), original_head(I, F2), old_rule(I), F1 != F2.
-% add head of a new rule
-add_head(I) :- rule(I), not old_rule(I), not dummy(I).
-
-remove_head(I) :- add_head(I), old_rule(I).
-remove_head(I) :- dummy(I), old_rule(I).
-
 
 % we have fixed all the rules
 % activated
@@ -51,7 +53,7 @@ activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule
 % generate the legal rule and the next rule
 legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), activated_f(J, I, P, F, T) : base(F), polar(P).
                
-true(F, J, T + 1) :- rule(I), tdom(T), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
+true(F, J, T + 1) :- rule(I), tdom(T), tdom(T+1), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
 % true(round(1), 1).
@@ -63,5 +65,6 @@ true(F, J, 1) :- init(F), base(F), program(J).
 #show remove_body/3.
 #show remove_body/4.
 #show remove_head/1.
-#show add_head/1.
+#show add_head/3.
+#show add_head/2.
 #show dummy/1.

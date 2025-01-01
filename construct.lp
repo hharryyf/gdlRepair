@@ -27,18 +27,6 @@ add_body(I, P, R, A) :- not original_body(I, P, R, A), act(I, P, R, A), rule(I),
 :- dummy(I), legal_rule(I), not old_rule(I).
 dummy(I + 1) :- dummy(I), not old_rule(I), rule(I + 1), rule(I). 
 
-% % remove head
-% remove_head(I) :- dummy(I), old_rule(I).
-% remove_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), R1 != R2.
-% remove_head(I) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), A1 != A2.
-% remove_head(I) :- head(I, F1), original_head(I, F2), old_rule(I), F1 != F2.
-% % add head cost
-% add_head(I, R1, A1) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), R1 != R2.
-% add_head(I, R1, A1) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), A1 != A2.
-% add_head(I, F1) :- head(I, F1), original_head(I, F2), old_rule(I), F1 != F2.
-% % add head of a new rule
-% add_head(I, R, A) :- rule(I), not old_rule(I), head(I, R, A).
-% add_head(I, F) :- rule(I), not old_rule(I), head(I, F).
 
 add_head(I, R1, A1) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), R1 != R2.
 add_head(I, R1, A1) :- head(I, R1, A1), original_head(I, R2, A2), old_rule(I), A1 != A2.
@@ -65,7 +53,7 @@ activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule
 % generate the legal rule and the next rule
 legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), activated_f(J, I, P, F, T) : base(F), polar(P).
                
-true(F, J, T + 1) :- rule(I), tdom(T), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
+true(F, J, T + 1) :- rule(I), tdom(T), tdom(T+1), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
 % true(round(1), 1).
