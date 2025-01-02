@@ -1,19 +1,31 @@
 polar(pos;neg).
 
-{fluent(I, P, F)} :- base(F), polar(P), rule(I).
-{act(I, P, R, A)} :- input(R, A), rule(I), polar(P), not legal_rule(I).
+{add_body(I, P, F)} :- rule(I), polar(P), base(F), not original_body(I,P,F).
+{remove_body(I, P, F)} :- rule(I), original_body(I,P,F).
+{remove_body(I,P,R,A)} :- rule(I), original_body(I,P,R,A).
+{add_body(I,P,R,A)} :- rule(I), not legal_rule(I), not original_body(I,P,R,A), input(R,A), polar(P).
+
+% :- add_body(I,P,F), remove_body(I,P,F).
+% :- add_body(I,P,R,A), remove_body(I,P,R,A).
+
+:- add_body(I,P,F), dummy(I).
+:- remove_body(I,P,F), dummy(I).
+:- add_body(I,P,R,A), dummy(I).
+:- remove_body(I,P,R,A), dummy(I).
+
+
+fluent(I,P,F) :- original_body(I,P,F), not remove_body(I,P,F).
+act(I,P,R,A) :- original_body(I,P,R,A), not remove_body(I,P,R,A).
+:- add_body(I,P,R,A), original_body(I,P,R,A).
+:- add_body(I,P,F), original_body(I,P,F).
+:- not original_body(I,P,R,A), remove_body(I,P,R,A).
+:- not original_body(I,P,F), remove_body(I,P,F).
+act(I,P,R,A) :- add_body(I,P,R,A).
+fluent(I,P,F) :- add_body(I,P,F).
 
 :- fluent(I, pos, F), fluent(I, neg, F).
 :- act(I, pos, R, A1), act(I, neg, R, A2).
 :- act(I, pos, R, A1), act(I, pos, R, A2), A1 < A2.
-
-% remove from the body
-remove_body(I, P, F) :- original_body(I, P, F), not fluent(I, P, F), base(F), rule(I), polar(P).
-remove_body(I, P, R, A) :- original_body(I, P, R, A), not act(I, P, R, A), rule(I), input(R, A), polar(P).
-
-% add to the body
-add_body(I, P, F) :- not original_body(I, P, F), fluent(I, P, F), base(F), rule(I), polar(P).
-add_body(I, P, R, A) :- not original_body(I, P, R, A), act(I, P, R, A), rule(I), input(R, A), polar(P).
 
 % any new rule can be either a legal rule or a next rule
 {legal_rule(I)} :- rule(I), not old_rule(I).
@@ -28,6 +40,8 @@ head(I, F) :- keep_head(I), original_head(I, F).
 1 {add_head(I, R, A) : input(R, A)} 1 :- update_head(I), legal_rule(I), old_rule(I).
 1 {add_head(I, F) : base(F)} 1 :- update_head(I), not legal_rule(I), old_rule(I).
 % add head should "change" the head
+:- update_head(I), head(I, R, A), original_head(I, R, A).
+:- update_head(I), head(I, F), original_head(I, F).
 % add head -> new head
 head(I, R, A) :- add_head(I, R, A).
 head(I, F) :- add_head(I, F).

@@ -6,12 +6,18 @@
 %     add_head(I,R,A) : rule(I), input(R, A);
 %     remove_head(I) : rule(I)}.
 
-:~ add_body(I, P, R, A). [1,I,P,R,A,add]
-:~ add_body(I, P, F). [1,I,P,F,add]
-:~ remove_body(I, P, R, A). [1, I, P, R, A,remove]
-:~ remove_body(I, P, F). [1,I,P,F,remove]
-:~ add_head(I,F). [2,I,F,add_head]
-:~ add_head(I,R,A). [2,I,R,A,add_head]
-:~ remove_head(I). [2,I,remove]
+:~ add_body(I, P, R, A). [1@2,I,P,R,A,add]
+:~ add_body(I, P, F). [1@2,I,P,F,add]
+:~ remove_body(I, P, R, A). [1@2, I, P, R, A,remove]
+:~ remove_body(I, P, F). [1@2,I,P,F,remove]
+:~ add_head(I,F). [1@2,I,F,add_head]
+:~ add_head(I,R,A). [1@2,I,R,A,add_head]
+:~ remove_head(I). [1@2,I,remove]
+
+:~ add_head(I,F). [1@1,I,F,add_head_1]
+:~ add_head(I,R,A). [1@1,I,R,A,add_head_1]
+:~ remove_head(I). [1@1,I,remove_1]
+
+
 
 % clingo --opt-mode=opt,8  construct-2.lp example/tic-tac-toe/tic-tac-toe-9-x.lp example/tic-tac-toe/bound.lp example/tic-tac-toe/win.lp 
