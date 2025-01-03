@@ -33,9 +33,9 @@ role(p).
 %true(s2, T + 1) :- tdom(T)
 
 
-terminal(T) :- true(round(1), T), tdom(T).
-goal(p, 100, T) :- true(s1, T), not true(s2, T), true(s3, T), tdom(T).
-goal(p, 0, T) :- not goal(p, 100, T), tdom(T).
+terminal(J, T) :- true(round(1), J, T), tdom(T), program(J).
+goal(p, 100, J, T) :- true(s1, J, T), not true(s2, J, T), true(s3, J, T), tdom(T), program(J).
+goal(p, 0, J, T) :- not goal(p, 100, J, T), tdom(T), program(J).
 
 
 % {pos_f(39, F)} :- base(F).
@@ -72,14 +72,6 @@ original_head(6, s2).
 % head(I, R, A) :- original_head(I, R, A).
 % head(I, F) :- original_head(I, F).
 
-{add_body(I, P, R, A) : rule(I), input(R, A), polar(P) ; 
-remove_body(I, P, R, A) : polar(P), rule(I), input(R, A) ; 
-add_body(I, P, F) : rule(I), base(F), polar(P) ; 
-remove_body(I, P, F) : polar(P), rule(I), base(F)} 0.
-
-{add_head(I) : rule(I) ; remove_head(I) : rule(I)} 1.
-
-
 
 %:- pos_f(39, F).
 %:- neg_f(39, F).
@@ -99,14 +91,3 @@ remove_body(I, P, F) : polar(P), rule(I), base(F)} 0.
 
 
 %%%%%%%%%%%%%%%
-
-#show does/3.
-#show true/2.
-#show add_body/3.
-#show add_body/4.
-#show remove_body/3.
-#show remove_body/4.
-#show remove_head/1.
-#show add_head/1.
-#show head/3.
-#show head/2.

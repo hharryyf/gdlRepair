@@ -36,3 +36,13 @@ delete a rule
     - multiplayer case is bad, probably no solver 
 2) set a limit for each of the 4 repairs, get a repair that is not exceeding the limits 
 
+
+
+---------------------------------------------
+
+1) The ASP finds the minimal changes required to make a game weakly winnable within a certain number of steps
+    termination and playability are ensured by additional constraints
+    (step counter + additional rule, no legal action for any player -> termination)
+2) parallel computing + smaller encoding helps
+3) lp2sat + kissat might work better for hard instances
+4) 

@@ -16,10 +16,10 @@ polar(pos;neg).
 
 fluent(I,P,F) :- original_body(I,P,F), not remove_body(I,P,F).
 act(I,P,R,A) :- original_body(I,P,R,A), not remove_body(I,P,R,A).
-:- add_body(I,P,R,A), original_body(I,P,R,A).
-:- add_body(I,P,F), original_body(I,P,F).
-:- not original_body(I,P,R,A), remove_body(I,P,R,A).
-:- not original_body(I,P,F), remove_body(I,P,F).
+%:- add_body(I,P,R,A), original_body(I,P,R,A).
+%:- add_body(I,P,F), original_body(I,P,F).
+%:- not original_body(I,P,R,A), remove_body(I,P,R,A).
+%:- not original_body(I,P,F), remove_body(I,P,F).
 act(I,P,R,A) :- add_body(I,P,R,A).
 fluent(I,P,F) :- add_body(I,P,F).
 
