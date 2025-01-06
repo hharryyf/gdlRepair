@@ -1,25 +1,17 @@
 polar(pos;neg).
-
+%%%%%%%%%%%%%%%%%% body
 {add_body(I, P, F)} :- rule(I), polar(P), base(F), not original_body(I,P,F).
 {remove_body(I, P, F)} :- rule(I), original_body(I,P,F).
 {remove_body(I,P,R,A)} :- rule(I), original_body(I,P,R,A).
 {add_body(I,P,R,A)} :- rule(I), not legal_rule(I), not original_body(I,P,R,A), input(R,A), polar(P).
-
-% :- add_body(I,P,F), remove_body(I,P,F).
-% :- add_body(I,P,R,A), remove_body(I,P,R,A).
 
 :- add_body(I,P,F), dummy(I).
 :- remove_body(I,P,F), dummy(I).
 :- add_body(I,P,R,A), dummy(I).
 :- remove_body(I,P,R,A), dummy(I).
 
-
 fluent(I,P,F) :- original_body(I,P,F), not remove_body(I,P,F).
 act(I,P,R,A) :- original_body(I,P,R,A), not remove_body(I,P,R,A).
-%:- add_body(I,P,R,A), original_body(I,P,R,A).
-%:- add_body(I,P,F), original_body(I,P,F).
-%:- not original_body(I,P,R,A), remove_body(I,P,R,A).
-%:- not original_body(I,P,F), remove_body(I,P,F).
 act(I,P,R,A) :- add_body(I,P,R,A).
 fluent(I,P,F) :- add_body(I,P,F).
 
@@ -27,6 +19,7 @@ fluent(I,P,F) :- add_body(I,P,F).
 :- act(I, pos, R, A1), act(I, neg, R, A2).
 :- act(I, pos, R, A1), act(I, pos, R, A2), A1 < A2.
 
+%%%%%%%%%%%%%%% head
 % any new rule can be either a legal rule or a next rule
 {legal_rule(I)} :- rule(I), not old_rule(I).
 % generate head for old rules
@@ -54,12 +47,11 @@ dummy(I + 1) :- dummy(I), not old_rule(I), rule(I + 1), rule(I).
 :- dummy(I), not old_rule(I), fluent(I, P, F).
 :- dummy(I), not old_rule(I), act(I, P, R, A).
 
-% we have fixed all the rules
-% activated
+% activate fluents
 activated_f(J, I, pos, F, T) :- fluent(I, pos, F), true(F, J, T), tdom(T), base(F), rule(I), program(J).
 activated_f(J, I, neg, F, T) :- fluent(I, neg, F), not true(F, J, T), tdom(T), base(F), rule(I), program(J).
 activated_f(J, I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P), program(J).
-
+% activate actions
 activated_a(J, I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
 activated_a(J, I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
 activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P), program(J).
@@ -70,7 +62,6 @@ legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), a
 true(F, J, T + 1) :- rule(I), tdom(T), tdom(T+1), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
-% true(round(1), 1).
 true(F, J, 1) :- init(F), base(F), program(J).
 
 #show does/4.
