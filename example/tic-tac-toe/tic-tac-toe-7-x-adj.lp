@@ -1,4 +1,5 @@
 tdom(1..10).
+mtdom(1..9).
 role(xplayer).
 role(oplayer).
 base(cell(1..3,1..3,x)).

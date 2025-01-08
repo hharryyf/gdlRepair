@@ -3,6 +3,7 @@
 '''
 
 print('tdom(1..10).')
+print('mtdom(1..9).')
 print('role(xplayer).')
 print('role(oplayer).')
 print('base(cell(1..3,1..3,x)).')

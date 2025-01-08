@@ -48,14 +48,14 @@ activated_f(J, I, pos, F, T) :- fluent(I, pos, F), true(F, J, T), tdom(T), base(
 activated_f(J, I, neg, F, T) :- fluent(I, neg, F), not true(F, J, T), tdom(T), base(F), rule(I), program(J).
 activated_f(J, I, P, F, T) :- not fluent(I, P, F), tdom(T), base(F), rule(I), polar(P), program(J).
 % activate actions
-activated_a(J, I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
-activated_a(J, I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, J, T), tdom(T), input(R, A), rule(I), program(J).
-activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), tdom(T), input(R, A), rule(I), polar(P), program(J).
+activated_a(J, I, pos, R, A, T) :- act(I, pos, R, A), does(R, A, J, T), mtdom(T), input(R, A), rule(I), program(J).
+activated_a(J, I, neg, R, A, T) :- act(I, neg, R, A), not does(R, A, J, T), mtdom(T), input(R, A), rule(I), program(J).
+activated_a(J, I, P, R, A, T) :- not act(I, P, R, A), mtdom(T), input(R, A), rule(I), polar(P), program(J).
 
 % generate the legal rule and the next rule
 legal(R, A, J, T) :- rule(I), tdom(T), input(R, A), head(I, R, A), program(J), activated_f(J, I, P, F, T) : base(F), polar(P).
                
-true(F, J, T + 1) :- rule(I), tdom(T), tdom(T+1), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
+true(F, J, T + 1) :- rule(I), mtdom(T), head(I, F),  program(J), activated_f(J, I, P, G, T) : base(G), polar(P) ;  activated_a(J, I, P, R, A, T) : input(R, A), polar(P).
 
 % init
 true(F, J, 1) :- init(F), base(F), program(J).

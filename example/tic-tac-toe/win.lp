@@ -2,9 +2,9 @@ program(1..2).
 
 :- not legal(R, A, P, T), does(R, A, P, T), role(R), program(P).
 
-1 {does(R, A, 1, T) : input(R, A)} 1 :- tdom(T), not terminated(1, T), role(R).
+1 {does(R, A, 1, T) : input(R, A)} 1 :- mtdom(T), not terminated(1, T), role(R).
 
-1 {does(R, A, 2, T) : input(R, A)} 1 :- tdom(T), not terminated(2, T), role(R).
+1 {does(R, A, 2, T) : input(R, A)} 1 :- mtdom(T), not terminated(2, T), role(R).
 
 terminated(J, T) :- terminal(J, T), tdom(T), program(J).
 terminated(J, T+1) :- terminated(J, T), tdom(T), program(J).

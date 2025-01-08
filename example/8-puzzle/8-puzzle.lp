@@ -1,4 +1,5 @@
 tdom(1..15).
+mtdom(1..14).
 role(player).
 base(step(1..15)).
 base(cell(1..3,1..3,1..8)).

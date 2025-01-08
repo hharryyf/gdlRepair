@@ -6,6 +6,7 @@ base(r).
 base(round(1..7)).
 
 tdom(1..7).
+mtdom(1..6).
 input(robot, a).
 input(robot, b).
 input(robot, c).

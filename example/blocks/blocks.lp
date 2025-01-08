@@ -1,6 +1,7 @@
 % blocks world, 2 legal rules are removed
 role(robot).
 tdom(1..4).
+mtdom(1..4).
 base(clear(a)).
 base(clear(b)).
 base(clear(c)).
