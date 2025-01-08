@@ -1,4 +1,5 @@
 tdom(1..2).
+mtdom(1).
 input(p, left).
 input(p, right).
 
@@ -51,7 +52,7 @@ goal(p, 0, J, T) :- not goal(p, 100, J, T), tdom(T), program(J).
 % :- pos_a(39, R, A1), pos_a(39, R, A2), A1 != A2.
 
 
-rule(1..7).
+rule(1..8).
 old_rule(1..6).
 legal_rule(1..2).
 
