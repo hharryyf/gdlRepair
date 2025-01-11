@@ -8,11 +8,11 @@
 
 :~ add_body(I, P, R, A). [1@2,I,P,R,A,add]
 :~ remove_body(I, P, R, A). [1@2, I, P, R, A,remove]
-:~ add_head(I,R,A). [1@2,I,R,A,add_head]
-:~ remove_head(I). [1@2,I,remove]
+:~ add_head(I,R,A). [2@2,I,R,A,add_head]
+:~ remove_head(I). [2@2,I,remove]
 
-:~ add_head(I,R,A). [1@1,I,R,A,add_head]
-:~ remove_head(I). [1@1,I,remove]
+%:~ add_head(I,R,A). [1@1,I,R,A,add_head]
+%:~ remove_head(I). [1@1,I,remove]
 
 %:~ add_body(I, P, R, A). [1@1,I,P,R,A,add]
 %:~ remove_body(I, P, R, A). [1@1, I, P, R, A,remove]
