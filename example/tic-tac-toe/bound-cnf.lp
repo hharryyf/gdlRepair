@@ -1,7 +1,5 @@
-:- 5 {add_body(I, P, R, A) : rule(I), input(R, A), polar(P);
-    add_body(I, P, F) : rule(I), base(F), polar(P);
-    remove_body(I, P, F) : polar(P), rule(I), base(F);
-    remove_body(I, P, R, A) : polar(P), rule(I), input(R, A);
-    add_head(I,F) : rule(I), base(F);
-    add_head(I,R,A) : rule(I), input(R, A);
+:- 4 {add_body(I, P, T, F) : atom(T,F), polar(P), rule(I); 
+      remove_body(I, P, T,F) : atom(T,F), polar(P), rule(I) ;
+    add_head(I,T,F) : rule(I), atom(T,F);
     remove_head(I) : rule(I)}.
+
