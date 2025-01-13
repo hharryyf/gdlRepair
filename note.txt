@@ -39,10 +39,27 @@ delete a rule
 
 
 ---------------------------------------------
+input: arbitary valid grounded GDL with restrictions
+next <- true+ | does+
+legal <- true+
+
+G = N \cup L \cup G'
+
+allowed modifications: 
+1) add/remove true/does from the body of N 
+2) remove a rule from N 
+3) add a new head to a rule of N (must remove the head first)
+4) add the head of a new rule
+5) add/remove true/does from the body of new rules
+
+claim: any set of rules with G' \cup  A_{p}^{true} |= terminal and goal(p,100) for all p \in Role has a 
+repair such that the new game is weakly winnable
 
 1) The ASP finds the minimal changes required to make a game weakly winnable within a certain number of steps
-    termination and playability are ensured by additional constraints
-    (step counter + additional rule, no legal action for any player -> termination)
+    termination and playability are ensured by additional constraints 
 2) parallel computing + smaller encoding helps
-3) lp2sat + kissat might work better for hard instances
-4) 
+3) lp2sat + kissat might work better for hard instances (we need to deal with the integrity constraints manually)
+
+TODO:
+1) termination? playability? --> easy but inefficient (co-NP, QBF) 
+2) strong winnability? --> easy but might be inefficient/motivation?
