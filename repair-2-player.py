@@ -66,7 +66,7 @@ def build_quantifier(current, other, gamefile, logfile, quantifier):
         specify the gamefile, the logarithmic encoding file, output to the quantifier file
     '''
 
-    cmd = f'clingo --output=smodels repair-qbf-4.lp {gamefile} {logfile}  > smodels.txt'
+    cmd = f'clingo --output=smodels repair-qbf-4.lp {gamefile} example/tic-tac-toe/win.lp {logfile}  > smodels.txt'
     os.system(f"bash -c '{cmd}'")
 
     outputfile = open(file=quantifier, mode='w')
@@ -127,10 +127,15 @@ def build_quantifier(current, other, gamefile, logfile, quantifier):
                         continue
 
                     lv = -1
+                    bk = -1
                     for i in range(len(newl) - 1, -1, -1):
                         if len(newl[i]) and newl[i] != '\n':
                             lv = int(newl[i])
+                            bk = i
                             break
+                    if newl[bk - 1] != 'sw':
+                        vertex[vid] = (atom, -1)
+                        continue
                     if lv != -1:
                         vertex[vid] = (atom, lv)
                         if atom[:lencurr] == f'does({current},':
