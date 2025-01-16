@@ -47,10 +47,10 @@ G = N \cup L \cup G'
 
 allowed modifications: 
 1) add/remove true/does from the body of N 
-2) remove a rule from N 
+2) remove a rule from N/L 
 3) add a new head to a rule of N (must remove the head first)
 4) add the head of a new rule
-5) add/remove true/does from the body of new rules
+5) add true/does from the body of new rules
 
 claim: any set of rules with G' \cup  A_{p}^{true} |= terminal and goal(p,100) for all p \in Role has a 
 repair such that the new game is weakly winnable

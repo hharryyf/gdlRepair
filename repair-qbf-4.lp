@@ -44,13 +44,3 @@ true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  activated_h(I,P
 
 % init
 true(F, J, 1) :- init(F), base(F), program(J).
-
-#show does/4.
-#show add_body/4.
-#show remove_body/4.
-#show remove_head/1.
-#show add_head/3.
-#show deleted/1.
-#show num_new_rules/1.
-#show new_rule/1.
-

@@ -71,7 +71,7 @@ for i in range(1, 4):
         #if (i == 1 and j == 1):
         #    print_next_rule(f'cell({i},{j},o)', [f'+d oplayer|mark({i},{j})', f'-f cell({i},{j},x)', f'-f cell({i},{j},o)']) # here's the bug
         #else:
-        print_next_rule(f'cell({i},{j},x)', [f'+d oplayer|mark({i},{j})', f'-f cell({i},{j},x)', f'-f cell({i},{j},o)']) # here's the bug
+        print_next_rule(f'cell({i},{j},o)', [f'+d oplayer|mark({i},{j})', f'-f cell({i},{j},x)', f'-f cell({i},{j},o)']) # here's the bug
          
         print_next_rule(f'cell({i},{j},x)', [f'+f cell({i},{j},x)'])
         print_next_rule(f'cell({i},{j},o)', [f'+f cell({i},{j},o)'])

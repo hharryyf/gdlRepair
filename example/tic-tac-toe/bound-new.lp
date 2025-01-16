@@ -6,5 +6,5 @@
 
 cost(I,N) :- N=#count { P,T,A : o_body(I,P,T,A) }, old_rule(I).
 
-:~ add_head(I,R,A). [1@1,I,R,A,add_head]
-:~ remove_head(I). [1@1,I,remove]
+% :~ add_head(I,R,A). [1@1,I,R,A,add_head]
+% :~ remove_head(I). [1@1,I,remove]
