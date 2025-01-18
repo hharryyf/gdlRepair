@@ -1,7 +1,11 @@
-:- 2 {add_body(I, P, R, A) : rule(I), input(R, A), polar(P);
-    add_body(I, P, F) : rule(I), base(F), polar(P);
-    remove_body(I, P, F) : polar(P), rule(I), base(F);
-    remove_body(I, P, R, A) : polar(P), rule(I), input(R, A);
-    add_head(I,F) : rule(I), base(F);
-    add_head(I,R,A) : rule(I), input(R, A);
-    remove_head(I) : rule(I)}.
+:- 2 <= #sum{ 1,I,P,T,F,add:add_body(I, P, T, F); 
+               1,I1, P1, T1,F1,remove: remove_body(I1, P1, T1,F1); 
+               1,I2,T2,F2:add_head(I2,T2,F2) ;
+               1,I4:remove_head(I4)
+            }.
+
+% :- 2 { add_body(I, P, T, F); 
+%               remove_body(I1, P1, T1,F1); 
+%               add_head(I2,T2,F2) ;
+%             remove_head(I4)
+%             }.
