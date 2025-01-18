@@ -11,6 +11,8 @@ f.close()
 f = open('out.qdimacs', 'r')
 for line in f:
     line = line.split()
+    if len(line) == 0:
+        continue
     if line[0] == 'V':
         if int(line[1]) in good:
             print(good[int(line[1])])

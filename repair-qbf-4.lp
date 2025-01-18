@@ -44,3 +44,6 @@ true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  activated_h(I,P
 
 % init
 true(F, J, 1) :- init(F), base(F), program(J).
+
+% qratpre+  --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  game.qdimacs > game-qbce.qdimacs
+% depqbf --qdo --no-dynamic-nenofex game-qbce.qdimacs
