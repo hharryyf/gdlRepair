@@ -13,7 +13,6 @@ does(oplayer, mark(3,3), sw, T) :- not moveL(oplayer, 1, sw, T), not moveL(oplay
 does(oplayer, noop, sw, T) :- moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), moveL(oplayer, 4, sw, T), legal(oplayer, noop, sw, T), not terminated(sw, T).
 
 % two player game
-tdom(1..9).
 
 % logarithmic encoding
 {moveL(oplayer, M, sw, T) : ldom(M)} :- tdom(act,T).

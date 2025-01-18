@@ -39,7 +39,7 @@ def log_encoding(inputfile, current, opponent, horizon, outfile):
     
     print(file=f)
     print('% two player game', file=f)
-    print(f"tdom(1..{horizon}).",file=f)
+    #print(f"tdom(1..{horizon}).",file=f)
     print(file=f)
     print("% logarithmic encoding",file=f)
     print(f"{{moveL({opponent}, M, sw, T) : ldom(M)}} :- tdom(act,T).",file=f)
@@ -60,13 +60,13 @@ def log_encoding(inputfile, current, opponent, horizon, outfile):
     print(f":- terminated(sw, 1), not goal({current}, 100 ,sw, 1).",file=f)
     f.close()
 
-def build_quantifier(current, other, gamefile, logfile, quantifier):
+def build_quantifier(current, other_file, gamefile, logfile, quantifier):
     '''
         Construct the quantifier prefix of the QASP based on the encoding method GD
         specify the gamefile, the logarithmic encoding file, output to the quantifier file
     '''
 
-    cmd = f'clingo --output=smodels repair-qbf-4.lp {gamefile} example/tic-tac-toe/win.lp {logfile}  > smodels.txt'
+    cmd = f'clingo --output=smodels repair-qbf-4.lp {gamefile} {other_file.replace(',', ' ')} {logfile}  > smodels.txt'
     os.system(f"bash -c '{cmd}'")
 
     outputfile = open(file=quantifier, mode='w')
@@ -219,9 +219,20 @@ def build_quantifier(current, other, gamefile, logfile, quantifier):
     outputfile.close()
 
 
-if len(sys.argv) != 6:
-    print('Usage: python repair-2-player.py [game-name] [horizon] [current player] [opponent] [outputfile]')
+if len(sys.argv) != 8 and len(sys.argv) != 7:
+    print('Usage: python repair-2-player.py [game-encoding-path] [horizon] [current player] [opponent] [outputfile] [repair bound file] [optional many other property files separated by ,]')
     exit(1)
 
+optional = ''
+
+if len(sys.argv) == 8:
+    optional = sys.argv[7].replace(',', ' ')
+
 log_encoding(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-log-encoding.lp'))
-build_quantifier(sys.argv[3], sys.argv[4], sys.argv[1], sys.argv[1].replace('.lp', '-log-encoding.lp'), sys.argv[1].replace('.lp', '-quantifier.lp'))
+build_quantifier(sys.argv[3], optional, sys.argv[1], sys.argv[1].replace('.lp', '-log-encoding.lp'), sys.argv[1].replace('.lp', '-quantifier.lp'))
+cmd = f'clingo --output=smodels repair-qbf-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-log-encoding.lp')} {sys.argv[1].replace('.lp', '-quantifier.lp')}  {sys.argv[6]}  {optional} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {sys.argv[5]}'
+os.system(f"bash -c '{cmd}'")
+print(f'Finsh Encoding, saving QBF instance to {sys.argv[5]} \nStart preprocessing...')
+cmd = f'time qratpre+  --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  {sys.argv[5]} > qbce-{sys.argv[5]}'
+os.system(f"bash -c '{cmd}'")
+print(f'Finish preprocessing \nSaving QBF instance to qbce-{sys.argv[5]}')
