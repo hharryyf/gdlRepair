@@ -220,7 +220,7 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
 
 
 if len(sys.argv) != 8 and len(sys.argv) != 7:
-    print('Usage: python repair-2-player.py [game-encoding-path] [horizon] [current player] [opponent] [outputfile] [repair bound file] [optional many other property files separated by ,]')
+    print('Usage: python repair-2-player-strong.py [game-encoding-path] [horizon] [current player] [opponent] [outputfile] [repair bound file] [optional many other property files separated by ,]')
     exit(1)
 
 optional = ''
