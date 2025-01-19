@@ -36,5 +36,5 @@ print(':- terminated(P, 1), not goal(R, 100, P, 1), weak_win(P,R).', file=f)
 
 f.close()
 
-cmd = f'clingo -t 3 --opt-mode=opt,{cost} --restart-on-model repair-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-weak-win.lp')} {sys.argv[2]}'
+cmd = f'clingo -t 3 --opt-mode=opt,{cost} --restart-on-model encoding/repair-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-weak-win.lp')} {sys.argv[2]}'
 os.system(f"bash -c '{cmd}'")

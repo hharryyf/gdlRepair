@@ -1,3 +1,9 @@
+import sys
+
+if len(sys.argv) != 2:
+    print('Usage python interpert.py [path-to-the-qdo-file]')
+    exit(1)
+file = sys.argv[1]
 f = open('out.qasp2qbf', 'r')
 good = {}
 for line in f:
@@ -8,7 +14,7 @@ for line in f:
 
 f.close()
 
-f = open('out.qdimacs', 'r')
+f = open(file, 'r')
 for line in f:
     line = line.split()
     if len(line) == 0:
