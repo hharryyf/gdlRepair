@@ -2,9 +2,11 @@ import os
 import sys 
 from clyngor import ASP, solve
 
-if len(sys.argv) != 2:
-    print('Usage python repair-N-player-weak.py [GDL ASP file]')
+if len(sys.argv) != 4:
+    print('Usage python repair-N-player-weak.py [GDL ASP file] [path to the repair cost definition file] [cost bound]')
     exit(1)
+
+cost = int(sys.argv[3])
 
 answer = solve(sys.argv[1], inline='#show role/1.')
 
@@ -34,7 +36,5 @@ print(':- terminated(P, 1), not goal(R, 100, P, 1), weak_win(P,R).', file=f)
 
 f.close()
 
-print('To ensure the weak-winnability-property, run')
-print()
-print(f'clingo -t 3 --opt-mode=opt,[optional bound] --restart-on-model repair-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-weak-win.lp')} [optional bound file]')
-
+cmd = f'clingo -t 3 --opt-mode=opt,{cost} --restart-on-model repair-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-weak-win.lp')} {sys.argv[2]}'
+os.system(f"bash -c '{cmd}'")
