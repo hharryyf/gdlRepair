@@ -16,7 +16,7 @@ Find the minimal repair to make a multi-player GDL weakly winnable or strongly w
 
 * If the head is ```next(f)```, it is encoded as ```original_head(I,f)```. 
 
-* For an atom in the body, if it is ```true(f)```, it is encoded as ```original_body(I,pos,f)```, if it is *does(r,a)*, it is encoded as ```original_body(I,pos,r,a)```. If it is appeared as a negative literal, it is encoded as ```original_body(I,neg,f)``` and ```original_body(I,neg,r,a)``` respectively. 
+* For an atom in the body, if it is ```true(f)```, it is encoded as ```original_body(I,pos,f)```, if it is ```does(r,a)```, it is encoded as ```original_body(I,pos,r,a)```. If it is appeared as a negative literal, it is encoded as ```original_body(I,neg,f)``` and ```original_body(I,neg,r,a)``` respectively. 
  
 
 **Repair weak winnability**
@@ -47,7 +47,7 @@ Run ```python interpret.py [qdo-file]``` to extract the repair.
 
 * Python 3+
 
-* QBF preprocessor qratpre++ https://github.com/lonsing/qratpreplus?tab=readme-ov-file (must put into PATH)
+* QBF preprocessor qratpre+ https://github.com/lonsing/qratpreplus?tab=readme-ov-file (must put into PATH)
 
 * qasp2qbf and its dependencies (i.e., lp2normal2, lp2acyc, lp2sat) https://github.com/potassco/qasp2qbf https://research.ics.aalto.fi/software/asp/download/ (lp2normal2, lp2acyc, lp2sat must be put into PATH)
 
