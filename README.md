@@ -14,7 +14,7 @@ Find the minimal repair to make a multi-player GDL weakly winnable or strongly w
 
 * For the i-th rule, if the head is ```legal(r,a)```, it is encoded as ```original_head(I,r,a)```. 
 
-* If the head is *next(f)*, it is encoded as ```original_head(I,f)```. 
+* If the head is ```next(f)```, it is encoded as ```original_head(I,f)```. 
 
 * For an atom in the body, if it is ```true(f)```, it is encoded as ```original_body(I,pos,f)```, if it is *does(r,a)*, it is encoded as ```original_body(I,pos,r,a)```. If it is appeared as a negative literal, it is encoded as ```original_body(I,neg,f)``` and ```original_body(I,neg,r,a)``` respectively. 
  
@@ -35,7 +35,9 @@ Here, we can only answer the question, is there a repair that has a cost at most
 python repair-2-player-strong.py [game-encoding-path] [horizon] [current] [opponent] [outputfile] [repair cost file] [optional other property files separated by ,]
 ```
 
-The QBF instance is stored in ```outputfile```, instance preprocessed by Qratpre++ is stored in ```qbce-outputfile```. 
+The QBF instance is stored in ```outputfile```, instance preprocessed by Qratpre++ is stored in ```qbce-outputfile```.
+
+Run ```python interpret.py [qdo-file]``` to extract the repair.
 
 ## Dependencies
 
