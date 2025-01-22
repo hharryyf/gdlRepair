@@ -1,10 +1,24 @@
-%:- 1 {add_body(I, P, T, F) ; remove_body(I1, P1, T1,F1) ; add_head(I2,T2,F2) ; remove_head(I3) }.
+% :- 2 {add_body(I, P, T, F) ; remove_body(I1, P1, T1,F1) ; add_head(I2,T2,F2) ; remove_head(I3) }.
+
+% :- add_body(I,P,T,F), remove_body(I1,P1,T1,F1).
+% :- add_body(I,P,T,F), add_head(I2,T2,F2).
+% :- add_body(I,P,T,F), remove_head(I3).
+% :- add_head(I2,T2,F2), remove_head(I3).
+% :- add_head(I2,T2,F2), remove_body(I1,P1,T1,F1).
+% :- remove_body(I1,P1,T1,F1), remove_head(I3).
+% :- add_body(I,P,T,F), add_body(I1,P1,T1,F1), 1{I != I1;P!=P1;T!=T1;F!=F1}.
+% :- remove_body(I,P,T,F), remove_body(I1,P1,T1,F1), 1{I != I1;P!=P1;T!=T1;F!=F1}.
+% :- add_head(I2,T2,F2), add_head(I,T,F), 1 {I != I2;T2 != T;F2!=F}.
+% :- remove_head(I), remove_head(I1), I != I1.
 
 
 % time clingo --output=smodels repair-qbf-4.lp example/tic-tac-toe/tic-tac-toe-real.lp example/tic-tac-toe/tic-tac-toe-real-log-encoding.lp example/tic-tac-toe/tic-tac-toe-real-quantifier.lp example/tic-tac-toe/bound-cnf.lp example/tic-tac-toe/win.lp | python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > game.qdimacs
 % qratpre+  --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  game.qdimacs > game-qbce.qdimacs
 
-
+% :- add_body(I, P, T, F).
+% :- remove_body(I1, P1, T1,F1).
+% :- add_head(I2,T2,F2).
+% :- remove_head(I4).
 :- 2 <= #sum{ 1,I,P,T,F,add:add_body(I, P, T, F); 
                1,I1, P1, T1,F1,remove: remove_body(I1, P1, T1,F1); 
                1,I2,T2,F2:add_head(I2,T2,F2) ;
