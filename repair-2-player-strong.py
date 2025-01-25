@@ -291,7 +291,10 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
             if visited[curr] == 1:
                 continue
             if uv != curr and curr in vertex:
-                print(f'_exists({depth},{vertex[curr][0]}).', file=outputfile)
+                if 'tl' in vertex[curr][0]:
+                    print(f'_exists({min(depth,3)},{vertex[curr][0]}).', file=outputfile)
+                else:
+                    print(f'_exists({depth},{vertex[curr][0]}).', file=outputfile)
             visited[curr] = 1
 
             for nxt in graph[curr]:
@@ -300,7 +303,10 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
 
     for i in range(luniv - 1, -1, -1):
         for uv in universal[univ_out[i][0]]:
-            print(f'_forall({i * 2 + 2},{vertex[uv][0]}).', file=outputfile)
+            if 'tl' in vertex[uv][0]:
+                print(f'_forall(2,{vertex[uv][0]}).', file=outputfile)
+            else:
+                print(f'_forall({i * 2 + 2},{vertex[uv][0]}).', file=outputfile)
         for uv in universal[univ_out[i][0]]:
             if visited[uv] != 1:
                 bfs(uv, uv, i * 2 + 3)
