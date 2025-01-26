@@ -61,6 +61,28 @@ def log_encoding(inputfile, current, opponent, horizon, outfile):
     f.close()
 
 
+def termination_playability_fast(inputfile, current, opponent, horizon, outfile):
+    # deal with termination
+    f = open(outfile, 'w')
+    print('true(roundcounter(1), J, 1) :- program(J).', file=f)
+    print('true(roundcounter(T+1), J, T+1) :- true(roundcounter(T), J, T), program(J), tdom(act,T).', file=f)
+    answer = solve(inputfile, inline='#show input/2.')
+    mdom = {}
+    for ans in answer:
+        for c in ans:
+            if c[1][0] not in mdom:
+                mdom[c[1][0]] = set()
+            mdom[c[1][0]].add(c[1][1])
+
+    for role in mdom.keys():
+        print('terminal(J,T) :- program(J), tdom(T)', end = '', file=f)
+        for act in mdom[role]:
+            print(f', not legal({role}, {act}, J, T)', end='', file=f)
+        print('.', file=f)    
+    
+    print(f'terminal(J,T):- true(roundcounter({horizon+1}), J, T), program(J), tdom(T).', file=f)        
+    f.close()
+
 def termination_playability(inputfile, current, opponent, horizon, outfile):
     f = open(outfile, 'w')
     print('program(tl).', file=f)
@@ -291,10 +313,10 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
             if visited[curr] == 1:
                 continue
             if uv != curr and curr in vertex:
-                if 'tl' in vertex[curr][0]:
-                    print(f'_exists({min(depth,3)},{vertex[curr][0]}).', file=outputfile)
-                else:
-                    print(f'_exists({depth},{vertex[curr][0]}).', file=outputfile)
+                #if 'tl' in vertex[curr][0]:
+                #    print(f'_exists({min(depth,3)},{vertex[curr][0]}).', file=outputfile)
+                #else:
+                print(f'_exists({depth},{vertex[curr][0]}).', file=outputfile)
             visited[curr] = 1
 
             for nxt in graph[curr]:
@@ -303,10 +325,10 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
 
     for i in range(luniv - 1, -1, -1):
         for uv in universal[univ_out[i][0]]:
-            if 'tl' in vertex[uv][0]:
-                print(f'_forall(2,{vertex[uv][0]}).', file=outputfile)
-            else:
-                print(f'_forall({i * 2 + 2},{vertex[uv][0]}).', file=outputfile)
+            #if 'tl' in vertex[uv][0]:
+            #    print(f'_forall(2,{vertex[uv][0]}).', file=outputfile)
+            #else:
+            print(f'_forall({i * 2 + 2},{vertex[uv][0]}).', file=outputfile)
         for uv in universal[univ_out[i][0]]:
             if visited[uv] != 1:
                 bfs(uv, uv, i * 2 + 3)
@@ -328,7 +350,7 @@ if len(sys.argv) == 8:
     optional = sys.argv[7].replace(',', ' ')
 
 log_encoding(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-log-encoding.lp'))
-termination_playability(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-termination.lp'))
+termination_playability_fast(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-termination.lp'))
 build_quantifier(sys.argv[3], optional, sys.argv[1], sys.argv[1].replace('.lp', '-log-encoding.lp'), sys.argv[1].replace('.lp', '-quantifier.lp'))
 cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-log-encoding.lp')} {sys.argv[1].replace('.lp', '-quantifier.lp')}  {sys.argv[6]}  {optional} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {sys.argv[5]}'
 os.system(f"bash -c '{cmd}'")
