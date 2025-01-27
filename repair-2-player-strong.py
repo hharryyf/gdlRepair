@@ -355,6 +355,6 @@ build_quantifier(sys.argv[3], optional, sys.argv[1], sys.argv[1].replace('.lp', 
 cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-log-encoding.lp')} {sys.argv[1].replace('.lp', '-quantifier.lp')}  {sys.argv[6]}  {optional} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {sys.argv[5]}'
 os.system(f"bash -c '{cmd}'")
 print(f'Saving QBF instance to {sys.argv[5]} \nStart QBCE preprocessing...')
-cmd = f'time qratpre+  --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  {sys.argv[5]} > qbce-{sys.argv[5]}'
+cmd = f'time qratpre+  --ignore-outermost-vars --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  {sys.argv[5]} > qbce-{sys.argv[5]}'
 os.system(f"bash -c '{cmd}'")
 print(f'Preprocessed QBF instance saved to qbce-{sys.argv[5]}')
