@@ -1,41 +1,7 @@
 from clyngor import ASP, solve
 import sys
 import os
-import queue
-from game_property import log_action_encoding, get_role, termination_playability_slow, build_quantifier
-
-def strong_winnability_encoding(inputfile, current, horizon, outfile):
-    f = open(outfile, 'w')
-    print('program(sw).', file=f)
-    print(f'tdom(1..{horizon+1}).', file=f)
-    ################ log-encoding #################
-    role = get_role(inputfile)
-    for r in role:
-        if r != current:
-            log_action_encoding(inputfile, r, 'sw', f)
-    
-    print('% N player game', file=f)
-    #print(f"tdom(1..{horizon}).",file=f)
-    print(file=f)
-    print("% logarithmic encoding",file=f)
-    print(f"{{moveL(R, M, sw, T) : ldom(R, M)}} :- tdom(act,T), role(R), R != {current}.",file=f)
-    print(file=f)
-    print("% additional constraints for the GDL encoding.",file=f)
-    print("terminated(sw,T) :- terminal(sw,T).",file=f)
-    print("terminated(sw,T) :- terminated(sw,T-1), tdom(T).",file=f)
-    print(file=f)
-    print(":- does(P,M,sw,T), not legal(P,M,sw,T).",file=f)
-    print(file=f)
-    print("% existential and universal players must take a move at its turn",file=f)
-    print("1 {does(P,M,sw,T) : input(P, M)} 1 :- not terminated(sw,T), tdom(act,T), role(P).",file=f)
-    print(":- terminated(sw,T), does(P,M,sw,T).",file=f)
-    print("% game must terminate",file=f)
-    print(":- 0 {terminated(sw,T) : tdom(T)} 0.",file=f)
-    print("% current player player must reach goal 100",file=f)
-    print(f":- terminated(sw,T), not terminated(sw,T-1), not goal({current}, 100 ,sw, T).",file=f)
-    print(f":- terminated(sw, 1), not goal({current}, 100 ,sw, 1).",file=f)
-    f.close()
-
+from game_property import termination_playability_slow, build_quantifier, strong_winnability_encoding
 
 def termination_playability_fast(inputfile, horizon, outfile):
     # deal with termination
@@ -60,8 +26,6 @@ def termination_playability_fast(inputfile, horizon, outfile):
     f.close()
 
 
-
-
 if len(sys.argv) != 7 and len(sys.argv) != 6:
     print('Usage: python repair-2-player-strong.py [game-encoding-path] [horizon] [current player] [outputfile] [repair bound file] [optional many other property files separated by ,]')
     exit(1)
@@ -82,7 +46,8 @@ bound = sys.argv[5]
 outfile = sys.argv[4]
 
 strong_winnability_encoding(inputfile, current, horizon, strong_win_file)
-termination_playability_fast(inputfile, horizon, terminal)
+#termination_playability_fast(inputfile, horizon, terminal)
+termination_playability_slow(inputfile, terminal)
 build_quantifier(current, files, inputfile, quantifier)
 cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {inputfile} {files} {quantifier}  {bound} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {outfile}'
 os.system(f"bash -c '{cmd}'")

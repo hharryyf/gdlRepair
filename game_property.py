@@ -267,3 +267,35 @@ def build_quantifier(current, other_file, gamefile, quantifier):
             print(f'_exists(1,{vertex[i][0]}).', file=outputfile)
 
     outputfile.close()
+
+def strong_winnability_encoding(inputfile, current, horizon, outfile):
+    f = open(outfile, 'w')
+    print('program(sw).', file=f)
+    print(f'tdom(1..{horizon+1}).', file=f)
+    ################ log-encoding #################
+    role = get_role(inputfile)
+    for r in role:
+        if r != current:
+            log_action_encoding(inputfile, r, 'sw', f)
+    
+    print('% N player game', file=f)
+    #print(f"tdom(1..{horizon}).",file=f)
+    print(file=f)
+    print("% logarithmic encoding",file=f)
+    print(f"{{moveL(R, M, sw, T) : ldom(R, M)}} :- tdom(act,T), role(R), R != {current}.",file=f)
+    print(file=f)
+    print("% additional constraints for the GDL encoding.",file=f)
+    print("terminated(sw,T) :- terminal(sw,T).",file=f)
+    print("terminated(sw,T) :- terminated(sw,T-1), tdom(T).",file=f)
+    print(file=f)
+    print(":- does(P,M,sw,T), not legal(P,M,sw,T).",file=f)
+    print(file=f)
+    print("% existential and universal players must take a move at its turn",file=f)
+    print("1 {does(P,M,sw,T) : input(P, M)} 1 :- not terminated(sw,T), tdom(act,T), role(P).",file=f)
+    print(":- terminated(sw,T), does(P,M,sw,T).",file=f)
+    print("% game must terminate",file=f)
+    print(":- 0 {terminated(sw,T) : tdom(T)} 0.",file=f)
+    print("% current player player must reach goal 100",file=f)
+    print(f":- terminated(sw,T), not terminated(sw,T-1), not goal({current}, 100 ,sw, T).",file=f)
+    print(f":- terminated(sw, 1), not goal({current}, 100 ,sw, 1).",file=f)
+    f.close()
