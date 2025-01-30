@@ -2,15 +2,14 @@ from clyngor import ASP, solve
 import sys
 import os
 import queue
-def log_encoding(inputfile, current, opponent, horizon, outfile):
-    f = open(outfile, 'w')
-    print('program(sw).', file=f)
+# f is the file pointer
+def log_action_encoding(inputfile, player, program, f):
     ################ log-encoding #################
     answer = solve(inputfile, inline='#show input/2.')
     moveL = set()
     for ans in answer:
         for c in ans:
-            if c[1][0] == opponent:
+            if c[1][0] == player:
                 moveL.add(c[1][1])
     moveL = list(moveL)
     moveL.sort()
@@ -18,31 +17,51 @@ def log_encoding(inputfile, current, opponent, horizon, outfile):
     while (1 << tol) < lenl:
         tol += 1
 
-    print(f'ldom(1..{tol}).', file=f)
+    print(f'ldom({player}, 1..{tol}).', file=f)
     print('% log-encoding', file=f)
 
     j = 0
     for i in range(0, 1 << tol):
         if j < len(moveL):
-            print(f'does({opponent}, {moveL[j]}, sw, T) :- ', end='', file=f)
+            print(f'does({player}, {moveL[j]}, {program}, T) :- ', end='', file=f)
             for k in range(0, tol):
                 if ((i >> k) & 1) == 0:
                     print('not ', end='', file=f)
                 if k == tol - 1:
                     if i == 0:
-                        print(f'moveL({opponent}, {k+1}' + ', sw, T), ' + f'legal({opponent}, {moveL[j]}, sw, T), not terminated(sw, T).', file=f)
+                        print(f'moveL({player}, {k+1}' + f', {program}, T), ' + f'legal({player}, {moveL[j]}, {program}, T), not terminated({program}, T).', file=f)
                     else:
-                        print(f'moveL({opponent}, {k+1}' + ', sw, T), ' + f'legal({opponent}, {moveL[j]}, sw, T), not terminated(sw, T).', file=f)
+                        print(f'moveL({player}, {k+1}' + f', {program}, T), ' + f'legal({player}, {moveL[j]}, {program}, T), not terminated({program}, T).', file=f)
                 else:
-                    print(f'moveL({opponent}, {k+1}' + ', sw, T), ', end='', file=f)
+                    print(f'moveL({player}, {k+1}' + f', {program}, T), ', end='', file=f)
         j += 1
     
     print(file=f)
-    print('% two player game', file=f)
+
+
+def get_role(inputfile):
+    answer = solve(sys.argv[1], inline='#show role/1.')
+    role = set()
+    for ans in answer:
+        for c in ans:
+            role.add(c[1][0])
+
+    return list(role)
+
+def strong_winnability_encoding(inputfile, current, horizon, outfile):
+    f = open(outfile, 'w')
+    print('program(sw).', file=f)
+    ################ log-encoding #################
+    role = get_role(inputfile)
+    for r in role:
+        if r != current:
+            log_action_encoding(inputfile, r, 'sw', f)
+    
+    print('% N player game', file=f)
     #print(f"tdom(1..{horizon}).",file=f)
     print(file=f)
     print("% logarithmic encoding",file=f)
-    print(f"{{moveL({opponent}, M, sw, T) : ldom(M)}} :- tdom(act,T).",file=f)
+    print(f"{{moveL(R, M, sw, T) : ldom(R, M)}} :- tdom(act,T), role(R), R != {current}.",file=f)
     print(file=f)
     print("% additional constraints for the GDL encoding.",file=f)
     print("terminated(sw,T) :- terminal(sw,T).",file=f)
@@ -61,7 +80,7 @@ def log_encoding(inputfile, current, opponent, horizon, outfile):
     f.close()
 
 
-def termination_playability_fast(inputfile, current, opponent, horizon, outfile):
+def termination_playability_fast(inputfile, horizon, outfile):
     # deal with termination
     f = open(outfile, 'w')
     print('true(roundcounter(1), J, 1) :- program(J).', file=f)
@@ -83,82 +102,20 @@ def termination_playability_fast(inputfile, current, opponent, horizon, outfile)
     print(f'terminal(J,T):- true(roundcounter({horizon+1}), J, T), program(J), tdom(T).', file=f)        
     f.close()
 
-def termination_playability(inputfile, current, opponent, horizon, outfile):
+def termination_playability(inputfile, horizon, outfile):
     f = open(outfile, 'w')
     print('program(tl).', file=f)
     ################ log-encoding #################
-    answer = solve(inputfile, inline='#show input/2.')
-    moveL = set()
-    for ans in answer:
-        for c in ans:
-            if c[1][0] == opponent:
-                moveL.add(c[1][1])
-    moveL = list(moveL)
-    moveL.sort()
-    tol, lenl = 0, len(moveL)
-    while (1 << tol) < lenl:
-        tol += 1
-
-    print(f'ldom({opponent}, 1..{tol}).', file=f)
-    print('% log-encoding', file=f)
-
-    j = 0
-    for i in range(0, 1 << tol):
-        if j < len(moveL):
-            print(f'does({opponent}, {moveL[j]}, tl, T) :- ', end='', file=f)
-            for k in range(0, tol):
-                if ((i >> k) & 1) == 0:
-                    print('not ', end='', file=f)
-                if k == tol - 1:
-                    if i == 0:
-                        print(f'moveL({opponent}, {k+1}' + ', tl, T), ' + f'legal({opponent}, {moveL[j]}, tl, T), not terminated(tl, T).', file=f)
-                    else:
-                        print(f'moveL({opponent}, {k+1}' + ', tl, T), ' + f'legal({opponent}, {moveL[j]}, tl, T), not terminated(tl, T).', file=f)
-                else:
-                    print(f'moveL({opponent}, {k+1}' + ', tl, T), ', end='', file=f)
-        j += 1
+    role = get_role(inputfile)   
+    for r in role:
+        log_action_encoding(inputfile, r, 'tl', f)
     
-    print(file=f)
-    answer = solve(inputfile, inline='#show input/2.')
-    moveL = set()
-    for ans in answer:
-        for c in ans:
-            if c[1][0] == current:
-                moveL.add(c[1][1])
-    moveL = list(moveL)
-    moveL.sort()
-    tol, lenl = 0, len(moveL)
-    while (1 << tol) < lenl:
-        tol += 1
 
-    print(f'ldom({current}, 1..{tol}).', file=f)
-    print('% log-encoding', file=f)
-
-    j = 0
-    for i in range(0, 1 << tol):
-        if j < len(moveL):
-            print(f'does({current}, {moveL[j]}, tl, T) :- ', end='', file=f)
-            for k in range(0, tol):
-                if ((i >> k) & 1) == 0:
-                    print('not ', end='', file=f)
-                if k == tol - 1:
-                    if i == 0:
-                        print(f'moveL({current}, {k+1}' + ', tl, T), ' + f'legal({current}, {moveL[j]}, tl, T), not terminated(tl, T).', file=f)
-                    else:
-                        print(f'moveL({current}, {k+1}' + ', tl, T), ' + f'legal({current}, {moveL[j]}, tl, T), not terminated(tl, T).', file=f)
-                else:
-                    print(f'moveL({current}, {k+1}' + ', tl, T), ', end='', file=f)
-        j += 1
-    
-    print(file=f)
-    
-    
-    print('% two player game', file=f)
+    print('% N player game termination + playability', file=f)
     #print(f"tdom(1..{horizon}).",file=f)
     print(file=f)
     print("% logarithmic encoding",file=f)
-    print(f"{{moveL({current}, M, tl, T) : ldom({current}, M)}} :- tdom(act,T).",file=f)
-    print(f"{{moveL({opponent}, M, tl, T) : ldom({opponent}, M)}} :- tdom(act,T).",file=f)
+    print("{moveL(R, M, tl, T) : ldom(R, M)} :- role(R), tdom(act,T).",file=f)
     print(file=f)
     print("% additional constraints for the GDL encoding.",file=f)
     print("terminated(tl,T) :- terminal(tl,T).",file=f)
@@ -340,22 +297,22 @@ def build_quantifier(current, other_file, gamefile, logfile, quantifier):
     outputfile.close()
 
 
-if len(sys.argv) != 8 and len(sys.argv) != 7:
-    print('Usage: python repair-2-player-strong.py [game-encoding-path] [horizon] [current player] [opponent] [outputfile] [repair bound file] [optional many other property files separated by ,]')
+if len(sys.argv) != 7 and len(sys.argv) != 6:
+    print('Usage: python repair-2-player-strong.py [game-encoding-path] [horizon] [current player] [outputfile] [repair bound file] [optional many other property files separated by ,]')
     exit(1)
 
 optional = ''
 
-if len(sys.argv) == 8:
-    optional = sys.argv[7].replace(',', ' ')
+if len(sys.argv) == 7:
+    optional = sys.argv[6].replace(',', ' ')
 
-log_encoding(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-log-encoding.lp'))
-termination_playability_fast(sys.argv[1], sys.argv[3], sys.argv[4], int(sys.argv[2]), sys.argv[1].replace('.lp', '-termination.lp'))
+strong_winnability_encoding(sys.argv[1], sys.argv[3], int(sys.argv[2]), sys.argv[1].replace('.lp', '-log-encoding.lp'))
+termination_playability_fast(sys.argv[1], int(sys.argv[2]), sys.argv[1].replace('.lp', '-termination.lp'))
 build_quantifier(sys.argv[3], optional, sys.argv[1], sys.argv[1].replace('.lp', '-log-encoding.lp'), sys.argv[1].replace('.lp', '-quantifier.lp'))
-cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-log-encoding.lp')} {sys.argv[1].replace('.lp', '-quantifier.lp')}  {sys.argv[6]}  {optional} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {sys.argv[5]}'
+cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {sys.argv[1]} {sys.argv[1].replace('.lp', '-log-encoding.lp')} {sys.argv[1].replace('.lp', '-quantifier.lp')}  {sys.argv[5]}  {optional} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {sys.argv[4]}'
 os.system(f"bash -c '{cmd}'")
-print(f'Saving QBF instance to {sys.argv[5]} \nStart QBCE preprocessing...')
+print(f'Saving QBF instance to {sys.argv[4]} \nStart QBCE preprocessing...')
 # --ignore-outermost-vars
-cmd = f'time qratpre+   --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  {sys.argv[5]} > qbce-{sys.argv[5]}'
+cmd = f'time qratpre+   --no-qat --no-qrate --no-eabs --no-eabs-improved-nesting  --print-formula  {sys.argv[4]} > qbce-{sys.argv[4]}'
 os.system(f"bash -c '{cmd}'")
-print(f'Preprocessed QBF instance saved to qbce-{sys.argv[5]}')
+print(f'Preprocessed QBF instance saved to qbce-{sys.argv[4]}')

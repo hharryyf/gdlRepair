@@ -1,5 +1,5 @@
 program(sw).
-ldom(1..4).
+ldom(oplayer, 1..4).
 % log-encoding
 does(oplayer, mark(1,1), sw, T) :- not moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), not moveL(oplayer, 4, sw, T), legal(oplayer, mark(1,1), sw, T), not terminated(sw, T).
 does(oplayer, mark(1,2), sw, T) :- moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), not moveL(oplayer, 4, sw, T), legal(oplayer, mark(1,2), sw, T), not terminated(sw, T).
@@ -12,10 +12,10 @@ does(oplayer, mark(3,2), sw, T) :- moveL(oplayer, 1, sw, T), moveL(oplayer, 2, s
 does(oplayer, mark(3,3), sw, T) :- not moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), moveL(oplayer, 4, sw, T), legal(oplayer, mark(3,3), sw, T), not terminated(sw, T).
 does(oplayer, noop, sw, T) :- moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), moveL(oplayer, 4, sw, T), legal(oplayer, noop, sw, T), not terminated(sw, T).
 
-% two player game
+% N player game
 
 % logarithmic encoding
-{moveL(oplayer, M, sw, T) : ldom(M)} :- tdom(act,T).
+{moveL(R, M, sw, T) : ldom(R, M)} :- tdom(act,T), role(R), R != xplayer.
 
 % additional constraints for the GDL encoding.
 terminated(sw,T) :- terminal(sw,T).

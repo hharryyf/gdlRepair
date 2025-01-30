@@ -1,5 +1,43 @@
-true(roundcounter(1), J, 1) :- program(J).
-true(roundcounter(T+1), J, T+1) :- true(roundcounter(T), J, T), program(J), tdom(act,T).
-terminal(J,T) :- program(J), tdom(T), not legal(oplayer, mark(2,1), J, T), not legal(oplayer, mark(1,1), J, T), not legal(oplayer, mark(2,3), J, T), not legal(oplayer, mark(1,2), J, T), not legal(oplayer, noop, J, T), not legal(oplayer, mark(3,2), J, T), not legal(oplayer, mark(1,3), J, T), not legal(oplayer, mark(3,3), J, T), not legal(oplayer, mark(2,2), J, T), not legal(oplayer, mark(3,1), J, T).
-terminal(J,T) :- program(J), tdom(T), not legal(xplayer, mark(2,1), J, T), not legal(xplayer, mark(1,1), J, T), not legal(xplayer, mark(2,3), J, T), not legal(xplayer, mark(1,2), J, T), not legal(xplayer, noop, J, T), not legal(xplayer, mark(3,2), J, T), not legal(xplayer, mark(1,3), J, T), not legal(xplayer, mark(3,3), J, T), not legal(xplayer, mark(2,2), J, T), not legal(xplayer, mark(3,1), J, T).
-terminal(J,T):- true(roundcounter(10), J, T), program(J), tdom(T).
+program(tl).
+ldom(xplayer, 1..4).
+% log-encoding
+does(xplayer, mark(1,1), tl, T) :- not moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(1,1), tl, T), not terminated(tl, T).
+does(xplayer, mark(1,2), tl, T) :- moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(1,2), tl, T), not terminated(tl, T).
+does(xplayer, mark(1,3), tl, T) :- not moveL(xplayer, 1, tl, T), moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(1,3), tl, T), not terminated(tl, T).
+does(xplayer, mark(2,1), tl, T) :- moveL(xplayer, 1, tl, T), moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(2,1), tl, T), not terminated(tl, T).
+does(xplayer, mark(2,2), tl, T) :- not moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(2,2), tl, T), not terminated(tl, T).
+does(xplayer, mark(2,3), tl, T) :- moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(2,3), tl, T), not terminated(tl, T).
+does(xplayer, mark(3,1), tl, T) :- not moveL(xplayer, 1, tl, T), moveL(xplayer, 2, tl, T), moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(3,1), tl, T), not terminated(tl, T).
+does(xplayer, mark(3,2), tl, T) :- moveL(xplayer, 1, tl, T), moveL(xplayer, 2, tl, T), moveL(xplayer, 3, tl, T), not moveL(xplayer, 4, tl, T), legal(xplayer, mark(3,2), tl, T), not terminated(tl, T).
+does(xplayer, mark(3,3), tl, T) :- not moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), moveL(xplayer, 4, tl, T), legal(xplayer, mark(3,3), tl, T), not terminated(tl, T).
+does(xplayer, noop, tl, T) :- moveL(xplayer, 1, tl, T), not moveL(xplayer, 2, tl, T), not moveL(xplayer, 3, tl, T), moveL(xplayer, 4, tl, T), legal(xplayer, noop, tl, T), not terminated(tl, T).
+
+ldom(oplayer, 1..4).
+% log-encoding
+does(oplayer, mark(1,1), tl, T) :- not moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(1,1), tl, T), not terminated(tl, T).
+does(oplayer, mark(1,2), tl, T) :- moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(1,2), tl, T), not terminated(tl, T).
+does(oplayer, mark(1,3), tl, T) :- not moveL(oplayer, 1, tl, T), moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(1,3), tl, T), not terminated(tl, T).
+does(oplayer, mark(2,1), tl, T) :- moveL(oplayer, 1, tl, T), moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(2,1), tl, T), not terminated(tl, T).
+does(oplayer, mark(2,2), tl, T) :- not moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(2,2), tl, T), not terminated(tl, T).
+does(oplayer, mark(2,3), tl, T) :- moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(2,3), tl, T), not terminated(tl, T).
+does(oplayer, mark(3,1), tl, T) :- not moveL(oplayer, 1, tl, T), moveL(oplayer, 2, tl, T), moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(3,1), tl, T), not terminated(tl, T).
+does(oplayer, mark(3,2), tl, T) :- moveL(oplayer, 1, tl, T), moveL(oplayer, 2, tl, T), moveL(oplayer, 3, tl, T), not moveL(oplayer, 4, tl, T), legal(oplayer, mark(3,2), tl, T), not terminated(tl, T).
+does(oplayer, mark(3,3), tl, T) :- not moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), moveL(oplayer, 4, tl, T), legal(oplayer, mark(3,3), tl, T), not terminated(tl, T).
+does(oplayer, noop, tl, T) :- moveL(oplayer, 1, tl, T), not moveL(oplayer, 2, tl, T), not moveL(oplayer, 3, tl, T), moveL(oplayer, 4, tl, T), legal(oplayer, noop, tl, T), not terminated(tl, T).
+
+% N player game termination + playability
+
+% logarithmic encoding
+{moveL(R, M, tl, T) : ldom(R, M)} :- role(R), tdom(act,T).
+
+% additional constraints for the GDL encoding.
+terminated(tl,T) :- terminal(tl,T).
+terminated(tl,T) :- terminated(tl,T-1), tdom(T).
+
+:- does(P,M,tl,T), not legal(P,M,tl,T).
+
+% existential and universal players must take a move at its turn
+1 {does(P,M,tl,T) : input(P, M)} 1 :- not terminated(tl,T), tdom(act,T), role(P).
+:- terminated(tl,T), does(P,M,tl,T).
+% game must terminate
+:- 0 {terminated(tl,T) : tdom(T)} 0.

@@ -61,5 +61,28 @@ repair such that the new game is weakly winnable
 3) lp2sat + kissat might work better for hard instances (we need to deal with the integrity constraints manually)
 
 TODO:
-1) termination? playability? --> easy but inefficient (co-NP, QBF) 
-2) strong winnability? --> easy but might be inefficient/motivation?
+1) termination? playability? --> easy but inefficient (co-NP, QBF/disjunctive ASP) 
+2) strong winnability? --> done
+
+
+
+
+
+
+repair property         complexity          language                     status
+
+weakly winnability          NP          normal logic program             done 
+
+strongly winnability      PSPACE           QASP/QBF                      done 
+
+termination/playability  sigma-2-p          3QBF                         done (very slow, timeout) 
+                                     2QBF/disjunctive ASP                   -
+
+
+
+LTL (bounded depth)   sigma-2-p?         2QBF/disjunctive ASP            -
+
+
+
+
+
