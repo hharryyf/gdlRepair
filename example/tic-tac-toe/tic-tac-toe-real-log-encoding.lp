@@ -1,4 +1,5 @@
 program(sw).
+tdom(1..10).
 ldom(oplayer, 1..4).
 % log-encoding
 does(oplayer, mark(1,1), sw, T) :- not moveL(oplayer, 1, sw, T), not moveL(oplayer, 2, sw, T), not moveL(oplayer, 3, sw, T), not moveL(oplayer, 4, sw, T), legal(oplayer, mark(1,1), sw, T), not terminated(sw, T).
