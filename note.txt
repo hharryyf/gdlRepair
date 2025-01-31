@@ -83,6 +83,24 @@ termination/playability  sigma-2-p          3QBF                         done (v
 LTL (bounded depth)   sigma-2-p?         2QBF/disjunctive ASP            -
 
 
+only X SW + O weak win:
+
+cost = 0: bloqqer        245.81s  preprocessing + caqe 0.35s solving -> UNSAT
+                                          + depqbf 2.24s solving
+          QRATPRE++ BCE  76.53s  preprocessing + caqe 294.28s solving 
+                                          + depqbf 118.74s solving 
+cost = 1: bloqqer      9515.79s  preprocessing + caqe 114.25s solving -> x can play (2,1) even if O is controling the game
+                                          + depqbf 92.51s solving  -> remove the 30th rule (1,2,o) -> next(1,2,o)
+          QRATPRE++ BCE   82.62s  preprocessing + caqe 213.62s solving ->remove_body(51,pos,act,(xplayer,mark(3,2)))
+                                          + depqbf 372.46s solving -> remove legal(2,2,o)
 
 
-
+X SW + termination + O weak win
+cost = 0: bloqqer        630.81s  preprocessing + caqe 0.58s solving -> UNSAT
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE  411.17s  preprocessing + caqe 2621.37s solving
+                                          + depqbf TIMEOUT      
+cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove body of rule 33 => true cell((1,3,x)) directly
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE           preprocessing + caqe OUT OF MEMORY
+                                          + depqbf TIMEOUT
