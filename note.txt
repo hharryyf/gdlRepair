@@ -111,3 +111,23 @@ cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove
                                           + depqbf TIMEOUT 
           QRATPRE++ BCE  148.43s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT
+
+X SW + termination + playability + O weak win
+cost = 0: bloqqer        630.81s  preprocessing + caqe 0.58s solving -> UNSAT
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE  411.17s  preprocessing + caqe 2621.37s solving
+                                          + depqbf TIMEOUT      
+cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove body of rule 33 => true cell((1,3,x)) directly
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE  148.43s      preprocessing + caqe OUT OF MEMORY
+                                          + depqbf TIMEOUT
+
+X SW + playability + O weak win
+cost = 0: bloqqer        570.99s  preprocessing + caqe 0.48s solving -> UNSAT
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE  382.24s  preprocessing + caqe 2580.39s solving
+                                          + depqbf TIMEOUT      
+cost = 1: bloqqer      -s  preprocessing + caqe -s solving -> 
+                                          + depqbf TIMEOUT 
+          QRATPRE++ BCE  -s      preprocessing + caqe OUT OF MEMORY
+                                          + depqbf TIMEOUT
