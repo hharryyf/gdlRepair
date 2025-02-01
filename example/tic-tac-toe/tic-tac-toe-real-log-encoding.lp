@@ -26,7 +26,6 @@ terminated(sw,T) :- terminated(sw,T-1), tdom(T).
 
 % existential and universal players must take a move at its turn
 1 {does(P,M,sw,T) : input(P, M)} 1 :- not terminated(sw,T), tdom(act,T), role(P).
-:- terminated(sw,T), does(P,M,sw,T).
 % game must terminate
 :- 0 {terminated(sw,T) : tdom(T)} 0.
 % current player player must reach goal 100

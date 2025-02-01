@@ -42,6 +42,8 @@ current = sys.argv[3]
 terminal = sys.argv[1].replace('.lp', '-termination.lp')
 quantifier = sys.argv[1].replace('.lp', '-quantifier.lp')
 files = optional + ' ' + strong_win_file + ' ' + terminal
+#files = optional +  ' ' + terminal
+
 bound = sys.argv[5]
 outfile = sys.argv[4]
 

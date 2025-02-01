@@ -83,7 +83,7 @@ termination/playability  sigma-2-p          3QBF                         done (v
 LTL (bounded depth)   sigma-2-p?         2QBF/disjunctive ASP            -
 
 
-only X SW + O weak win:
+X SW + O weak win:
 
 cost = 0: bloqqer        245.81s  preprocessing + caqe 0.35s solving -> UNSAT
                                           + depqbf 2.24s solving
@@ -95,12 +95,19 @@ cost = 1: bloqqer      9515.79s  preprocessing + caqe 114.25s solving -> x can p
                                           + depqbf 372.46s solving -> remove legal(2,2,o)
 
 
-X SW + termination + O weak win
+termination + playability + O weak win
+cost = 0: bloqqer        351.29s  preprocessing + caqe 2.80s solving 
+                                          + depqbf 1914.76s 
+          QRATPRE++ BCE  217.45s  preprocessing + caqe 1755.19s solving
+                                          + depqbf TIMEOUT      
+
+
+X SW + termination + playability + O weak win
 cost = 0: bloqqer        630.81s  preprocessing + caqe 0.58s solving -> UNSAT
                                           + depqbf TIMEOUT 
           QRATPRE++ BCE  411.17s  preprocessing + caqe 2621.37s solving
                                           + depqbf TIMEOUT      
 cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove body of rule 33 => true cell((1,3,x)) directly
                                           + depqbf TIMEOUT 
-          QRATPRE++ BCE           preprocessing + caqe OUT OF MEMORY
+          QRATPRE++ BCE  148.43s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT
