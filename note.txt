@@ -132,7 +132,7 @@ cost = 0: bloqqer        639.90s  preprocessing + caqe 0.61s solving -> UNSAT
                                           + depqbf - 
           QRATPRE++ BCE  416.12s  preprocessing + caqe 2375.57s solving
                                           + depqbf TIMEOUT      
-cost = 1: bloqqer      -s  preprocessing + caqe -s solving -> 
+cost = 1: bloqqer      20150.75s  preprocessing + caqe 230.75s solving -> remove_body(47,pos,act,(xplayer,mark(3,1)))
                                           + depqbf TIMEOUT 
           QRATPRE++ BCE  170.12s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT
