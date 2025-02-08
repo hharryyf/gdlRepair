@@ -82,7 +82,7 @@ termination/playability  sigma-2-p          3QBF                         done (v
 
 LTL (bounded depth)   sigma-2-p?         2QBF/disjunctive ASP            -
 
-
+cost = 1, 1, 1, 1
 X SW + O weak win:
 
 cost = 0: bloqqer        245.81s  preprocessing + caqe 0.35s solving -> UNSAT
@@ -112,22 +112,27 @@ cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove
           QRATPRE++ BCE  148.43s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT
 
-X SW + termination + playability + O weak win
-cost = 0: bloqqer        630.81s  preprocessing + caqe 0.58s solving -> UNSAT
-                                          + depqbf TIMEOUT 
-          QRATPRE++ BCE  411.17s  preprocessing + caqe 2621.37s solving
-                                          + depqbf TIMEOUT      
-cost = 1: bloqqer      20030.84s  preprocessing + caqe 230.55s solving -> remove body of rule 33 => true cell((1,3,x)) directly
-                                          + depqbf TIMEOUT 
-          QRATPRE++ BCE  148.43s      preprocessing + caqe OUT OF MEMORY
-                                          + depqbf TIMEOUT
 
-X SW + playability + O weak win
-cost = 0: bloqqer        570.99s  preprocessing + caqe 0.48s solving -> UNSAT
-                                          + depqbf TIMEOUT 
-          QRATPRE++ BCE  382.24s  preprocessing + caqe 2580.39s solving
+
+cost = 1, 1, 1, |body| + 1
+X SW + O weak win:
+
+cost = 0: bloqqer        236.46s  preprocessing + caqe 0.32s solving -> UNSAT 
+                                          + depqbf 2.88s solving
+          QRATPRE++ BCE  76.51s  preprocessing + caqe 288.48s solving 
+                                          + depqbf 110.21s solving 
+cost = 1: bloqqer      9022.76s  preprocessing + caqe 95.51s solving -> -
+                                          + depqbf 72.97s solving  -> add_body(42,neg,fluent,control(xplayer))
+          QRATPRE++ BCE   86.70s  preprocessing + caqe 200.67s solving -> remove_body(29,pos,fluent,cell(1,2,x))
+                                          + depqbf 944.73s solving -> add_body(30,pos,act,(xplayer,noop))
+
+
+X SW + termination + playability + O weak win
+cost = 0: bloqqer        639.90s  preprocessing + caqe 0.61s solving -> UNSAT 
+                                          + depqbf - 
+          QRATPRE++ BCE  416.12s  preprocessing + caqe 2375.57s solving
                                           + depqbf TIMEOUT      
 cost = 1: bloqqer      -s  preprocessing + caqe -s solving -> 
                                           + depqbf TIMEOUT 
-          QRATPRE++ BCE  -s      preprocessing + caqe OUT OF MEMORY
+          QRATPRE++ BCE  170.12s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT

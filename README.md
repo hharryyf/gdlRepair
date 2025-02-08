@@ -1,6 +1,6 @@
 # GDL Repair
 
-Find the minimal repair to make a multi-player GDL weakly winnable or strongly winnable.
+Find the minimal repair to make a multi-player GDL weakly winnable/strongly winnable and termination and playable.
 
 ## Description
 
@@ -47,7 +47,7 @@ Run ```python interpret.py [qdo-file]``` to extract the repair.
 
 * Python 3+
 
-* QBF preprocessor qratpre+ https://github.com/lonsing/qratpreplus?tab=readme-ov-file (must put into PATH)
+* QBF preprocessor qratpre+ https://github.com/lonsing/qratpreplus?tab=readme-ov-file (must put into PATH) and bloqqer https://fmv.jku.at/bloqqer/ (bloqqer must be put into PATH)
 
 * qasp2qbf and its dependencies (i.e., lp2normal2, lp2acyc, lp2sat) https://github.com/potassco/qasp2qbf https://research.ics.aalto.fi/software/asp/download/ (lp2normal2, lp2acyc, lp2sat must be put into PATH)
 
