@@ -153,7 +153,7 @@ def build_quantifier(current, other_file, gamefile, quantifier):
                         for h in head:
                             edge.add((line[i], h))
                 else:
-                    print('Cannot handle rule of type 4+ in Clingo!')
+                    print('Cannot handle rule of type 4+ in Clingo!', line)
                     exit(1)
             elif state == 1:
                 line = line.split()
