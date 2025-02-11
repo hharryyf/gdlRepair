@@ -48,8 +48,8 @@ bound = sys.argv[5]
 outfile = sys.argv[4]
 
 strong_winnability_encoding(inputfile, current, horizon, strong_win_file)
-#termination_playability_fast(inputfile, horizon, terminal)
-termination_playability_slow(inputfile, terminal)
+termination_playability_fast(inputfile, horizon, terminal)
+#termination_playability_slow(inputfile, terminal)
 build_quantifier(current, files, inputfile, quantifier)
 cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {inputfile} {files} {quantifier}  {bound} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {outfile}'
 os.system(f"bash -c '{cmd}'")

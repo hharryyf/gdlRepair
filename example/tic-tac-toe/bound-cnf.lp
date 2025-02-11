@@ -88,6 +88,7 @@
 
 
 
+
 %:- 2 {add_body(I,P,T,F) = 1; remove_body(I1, P1, T1,F1) = 1; add_head(I2,T2,F2) = 1; remove_head(I) = 2}.
 
 %cost(I,N) :- N=#count { P,T,A : o_body(I,P,T,A) }, old_rule(I).
