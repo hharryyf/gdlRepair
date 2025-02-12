@@ -1,0 +1,44 @@
+The existance of a repair:
+1-stage game (polynomial time)
+
+repair with constraints:
+                         bounded <= C                    minimal                 implementation
+weak winnability        NP-c                           delta-2-P-c             ASP -> clingo /ASP  -> lp2sat -> kissat
+termination             sigma-2-P-c                    delta-3-P-c             disjunctive -> clingo / QASP -> qasp2qbf -> qratpre+ -> caqe  
+playability             sigma-2-P-c                    delta-3-P-c             disjunctive -> clingo / QASP -> qasp2qbf -> qratpre+ -> caqe
+strong winnability      PSPACE-c                       PSPACE-c                QASP -> qasp2qbf -> qratpre+ -> caqe
+
+encoding
+
+
+experiments:
+1. a security game 
+2. tic-tac-toe 
+3. 8-puzzle 
+4. blocks world
+solve the bounded problem until SAT 
+
+analyse the repair of tic-tac-toe 
+
+naive method: termination and playablity 
+
+
+
+1. weak winnability bounded is NP-c 
+Membership. Guess the repair + plan.
+Hardness. Repair of cost 0 -> planning -> NP-c
+
+2. termination/playability bounded is sigma-2-P-c
+Membership. Guess the repair + co-NP verification.
+Hardness. exist + forall 3-DNF -> 2-stage GDL repair problem
+stage 1: fix whether the existential variables 
+stage 2: execution of the actions
+
+3. strong winnability 
+Membership. Guess the repair + solving 2-player game 
+Hardness. Repair of cost 0 -> solving 2-player game
+
+4. The delta bound.
+Membership. Binary search strategy.
+This can be reduced to 2-stage, the repair cost is not 1/inf/inf/inf anymore but 1/2/4/8...
+
