@@ -1,99 +1,92 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% encoding
-
+polar(pos;neg).
+opp(pos,neg). opp(neg,pos).
 % disjunctions
-posneg(0;1).
 
-true(s(I), T, P) : posneg(P) :- tdom(T), base(s(I)).
-terminal(T, P) : posneg(P) :- tdom(T).
-terminated(T, P) : posneg(P) :- tdom(T).
+d_true(s(I), T, P) : polar(P) :- tdom(fluent,T), base(s(I)).
+d_terminal(T, P) : polar(P) :- tdom(fluent,T).
+d_terminated(T, P) : polar(P) :- tdom(fluent,T).
 
-does(R, M, T, P) : posneg(P) :- input(player, M), mtdom(T), role(R).
-legal(R, M, T, P) : posneg(P) :- input(R, M), tdom(T).
+d_does(R, M, T, P) : polar(P) :- input(player, M), tdom(act,T), role(R).
+d_legal(R, M, T, P) : polar(P) :- input(R, M), tdom(fluent,T).
 % error if no legal action at some state
-has_legal(R, T, P) : posneg(P) :- tdom(T), role(R).
-no_legal(T, P) : posneg(P) :- tdom(T), role(R).
+has_legal(R, T, P) : polar(P) :- tdom(fluent,T), role(R).
+no_legal(T, P) : polar(P) :- tdom(fluent,T), role(R).
 
 %%%%%%%%%%% saturation technique
 
-legal(R, M, T, P) :- w, input(R, M), tdom(T), posneg(P).
-does(R, M, T, P) :- w, input(R, M), mtdom(T), posneg(P).
-terminal(T, P) :- w, tdom(T), posneg(P).
-terminated(T, P) :- w, tdom(T), posneg(P).
-has_legal(R, T, P) :- w, tdom(T), role(R), posneg(P).
-no_legal(T, P) :- w, tdom(T), posneg(P).
-true(F, T, P) :- w, tdom(T), base(F), posneg(P).
+d_legal(R, M, T, P) :- w, input(R, M), tdom(fluent,T), polar(P).
+d_does(R, M, T, P) :- w, input(R, M), tdom(act,T), polar(P).
+d_terminal(T, P) :- w, tdom(fluent,T), polar(P).
+d_terminated(T, P) :- w, tdom(fluent,T), polar(P).
+has_legal(R, T, P) :- w, tdom(fluent,T), role(R), polar(P).
+no_legal(T, P) :- w, tdom(fluent,T), polar(P).
+d_true(F, T, P) :- w, tdom(fluent,T), base(F), polar(P).
 
 :- not w.
 
 %%%%%%%%% state manipulation
 
 % init
-w :- true(F, 1, 0), init(F), base(F).
-w :- true(F, 1, 1), not init(F), base(F).
+w :- d_true(F, 1, neg), init(F), base(F).
+w :- d_true(F, 1, pos), not init(F), base(F).
 
 % when the game is not terminating, the player plays no move
-w :- mtdom(T), terminated(T, 0), does(R, M, T, 0) : input(R, M).
+w :- tdom(act,T), d_terminated(T, neg), d_does(R, M, T, neg) : input(R, M).
 %w :- 0 { does(R, M, T, 1) } 0, mtdom(T), role(R), terminated(T, 0), no_legal(T, 0).
 % when the game terminates, the player plays a move
-w :- mtdom(T), terminated(T, 1), does(R, M, T, 1).
+w :- tdom(act,T), d_terminated(T, pos), d_does(R, M, T, pos).
 % the player both play a move and not play a move
-w :- does(R, M, T, 0), does(R, M, T, 1).
+w :- d_does(R, M, T, neg), d_does(R, M, T, pos).
 % the player plays more than 2 moves
-w :- 2 { does(R, M, T, 1) }, mtdom(T), role(R).
+w :- 2 { d_does(R, M, T, pos) }, tdom(act,T), role(R).
 % the player plays an illegal move
-w :- does(R, M, T, 1), legal(R, M, T, 0), terminated(T, 0), no_legal(T, 0).
+w :- d_does(R, M, T, pos), d_legal(R, M, T, neg), d_terminated(T, neg), no_legal(T, neg).
 % the game must terminate and the player must always have legal actions along the way
-w :- terminal(T, 1), no_legal(T, 0).
+w :- d_terminal(T, pos), no_legal(T, neg). % add new constraints for other logical properties
 
-w :- legal(R, M, T, 0), legal(R, M, T, 1).
-w :- has_legal(R, T, 0), legal(R, M, T, 1).
-w :- has_legal(R, T, 1), legal(R, M, T, 0) : input(R, M).
-w :- no_legal(T, 0), no_legal(T-1, 1), mtdom(T-1).
-w :- no_legal(T, 0), terminated(T, 0), has_legal(R, T, 0) : role(R).
-w :- no_legal(1, 1), terminated(1, 1).
-w :- no_legal(1, 1), has_legal(R, 1, 1) : role(R).
-w :- no_legal(T, 1), no_legal(T-1, 0), mtdom(T-1), terminated(T, 1).
-w :- no_legal(T, 1), no_legal(T-1, 0), mtdom(T-1), has_legal(R, T, 1) : role(R).
+w :- d_legal(R, M, T, neg), d_legal(R, M, T, pos).
+w :- has_legal(R, T, neg), d_legal(R, M, T, pos).
+w :- has_legal(R, T, pos), d_legal(R, M, T, neg) : input(R, M).
+w :- no_legal(T, neg), no_legal(T-1, pos), tdom(act,T-1).
+w :- no_legal(T, neg), d_terminated(T, neg), has_legal(R, T, neg) : role(R).
+w :- no_legal(1, pos), d_terminated(1, pos).
+w :- no_legal(1, pos), has_legal(R, 1, pos) : role(R).
+w :- no_legal(T, pos), no_legal(T-1, neg), tdom(act,T-1), d_terminated(T, pos).
+w :- no_legal(T, pos), no_legal(T-1, neg), tdom(act,T-1), has_legal(R, T, pos) : role(R).
 
-w :- terminated(T, 0), terminal(T, 1).
-w :- terminated(T, 0), terminated(T-1, 1), mtdom(T-1).
-w :- terminated(T, 1), terminal(T, 0), terminated(T-1, 0), mtdom(T-1).
-w :- terminated(T, 1), terminal(1, 0).
-
-
+w :- d_terminated(T, neg), d_terminal(T, pos).
+w :- d_terminated(T, neg), d_terminated(T-1, pos), tdom(act,T-1).
+w :- d_terminated(T, pos), d_terminal(T, neg), d_terminated(T-1, neg), tdom(act,T-1).
+w :- d_terminated(1, pos), d_terminal(1, neg).
 %%%%%%%%%%%%%%%% completion of legal and true
 
-
-w :- legal(player, left, T, 0), true(s(1), T, 1).
-w :- legal(player, left, T, 0), true(s(2), T, 1).
-w :- legal(player, left, T, 1), true(s(1), T, 0), true(s(2), T, 0).
-w :- legal(player, right, T, 0).
+w :- d_legal(player, left, T, neg), d_true(s(1), T, pos).
+w :- d_legal(player, left, T, neg), d_true(s(2), T, pos).
+w :- d_legal(player, left, T, pos), d_true(s(1), T, neg), d_true(s(2), T, neg).
+w :- d_legal(player, right, T, neg).
 % s[7] should have no legal actions, but the player can play right to win the game
-%w :- legal(player, right, T, 0), true(s(I), T, 1), I != 7, base(s(I)).
-%w :- legal(player, right, T, 1), true(s(7), T, 1).
+%w :- d_legal(player, right, T, neg), d_true(s(I), T, pos), I != 7, base(s(I)).
+%w :- d_legal(player, right, T, pos), d_true(s(7), T, pos).
 
+w :- d_true(s(1), T, pos), tdom(fluent,T), T > 1.
+w :- d_true(s(I * 2), T + 1, neg), d_true(s(I), T, pos), tdom(act,T), d_does(player, left, T, pos), base(s(I + I)), base(s(I)).
+w :- d_true(s(I * 2 + 1), T + 1, neg), d_true(s(I), T, pos), tdom(act,T), d_does(player, right, T, pos), base(s(I + I + 1)), base(s(I)).
 
-w :- true(s(1), T, 1), tdom(T), T > 1.
-w :- true(s(I * 2), T + 1, 0), true(s(I), T, 1), mtdom(T), does(player, left, T, 1), base(s(I + I)), base(s(I)).
-w :- true(s(I * 2 + 1), T + 1, 0), true(s(I), T, 1), mtdom(T), does(player, right, T, 1), base(s(I + I + 1)), base(s(I)).
-
-w :- true(s(I * 2), T + 1, 1), 1{true(s(I), T, 0);does(player, left, T, 0)}, mtdom(T), base(s(I + I)), base(s(I)).
-w :- true(s(I * 2 + 1), T + 1, 1), 1{true(s(I), T, 0);does(player, right, T, 0)},mtdom(T), base(s(I + I + 1)), base(s(I)).
+w :- d_true(s(I * 2), T + 1, pos), 1{d_true(s(I), T, neg);d_does(player, left, T, neg)}, tdom(act,T), base(s(I + I)), base(s(I)).
+w :- d_true(s(I * 2 + 1), T + 1, pos), 1{d_true(s(I), T, neg);d_does(player, right, T, neg)},tdom(act,T), base(s(I + I + 1)), base(s(I)).
 
 %%%%%%%%%%%%%%%%%% completion of terminal/terminated/goal
+w :- d_terminal(T, neg), d_true(s(9), T, pos), tdom(fluent,T).
+w :- d_terminal(T, neg), d_true(s(11), T, pos), tdom(fluent,T).
+w :- d_terminal(T, neg), d_true(s(15), T, pos), tdom(fluent,T).
 
-
-
-w :- terminal(T, 0), true(s(9), T, 1), tdom(T).
-w :- terminal(T, 0), true(s(11), T, 1), tdom(T).
-w :- terminal(T, 0), true(s(15), T, 1), tdom(T).
-
-w :- terminal(T, 1), true(s(9), T, 0), true(s(11), T, 0), true(s(15), T, 0), tdom(T).
+w :- d_terminal(T, pos), d_true(s(9), T, neg), d_true(s(11), T, neg), d_true(s(15), T, neg), tdom(fluent,T).
 
 %%%%%%%%%%%%%%%%%%%% original problem
 
-tdom(1..4).
-mtdom(1..3).
+tdom(fluent,1..4).
+tdom(act,1..3).
 role(player).
 input(player, left).
 input(player, right).
@@ -119,32 +112,11 @@ init(s(1)).
 % %terminal(T) :- true(s(14), T).
 % terminal(T) :- true(s(15), T), tdom(T).
 
-
-
-% % 1 {does(player, M, T) : input(player, M)} 1 :- mtdom(T).
-% % :- does(player, M, T), not legal(player, M, T).
-% % :- 0 {terminated(T) : tdom(T)} 0.
-% terminated(T) :- terminal(T), tdom(T).
-% terminated(T + 1) :- terminated(T), tdom(T+1).
-% w :- terminated(4).
-% w :- does(player, M, T), not legal(player, M, T).
-% w :- 0 {does(player, M, T) : input(player, M)} 0, mtdom(T), not terminated(T).
-% w :- 2 {does(player, M, T) : input(player, M)}, mtdom(T), not terminated(T).
-
-% %terminal(T) :- w, tdom(T).
-% %true(F, T) :- w, base(F), tdom(T).
-
-% does(player, M, T) : input(player, M) :- mtdom(T).
-
-% does(player, M, T) :- w, input(player, M), mtdom(T).
-
-% %legal(player, M, T) :- w, input(player, M), tdom(T).
-
 #show.
 %#show has_legal/3.
 #show no_legal/2.
 %#show legal/4.
-#show legal(R,M,T) : legal(R,M,T,1).
-#show does(R,M,T) : does(R,M,T,1).
-#show true(S,T) : true(S, T, 1).
+#show d_legal(R,M,T) : d_legal(R,M,T,pos).
+#show d_does(R,M,T) : d_does(R,M,T,pos).
+#show d_true(S,T) : d_true(S, T, pos).
 % #show w/0.
