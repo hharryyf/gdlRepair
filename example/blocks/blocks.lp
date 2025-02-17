@@ -1,7 +1,6 @@
 % blocks world, 2 legal rules are removed
 role(robot).
 tdom(1..4).
-mtdom(1..4).
 base(clear(a)).
 base(clear(b)).
 base(clear(c)).
@@ -48,7 +47,7 @@ init(step(1)).
 original_head(1, robot, s(a,b)). original_body(1, pos, clear(a)). original_body(1, pos, table(a)). original_body(1, pos, clear(b)). 
 original_head(2, robot, s(a,c)). original_body(2, pos, clear(a)). original_body(2, pos, table(a)). original_body(2, pos, clear(c)). 
 original_head(3, robot, s(b,a)). original_body(3, pos, clear(b)). original_body(3, pos, table(b)). original_body(3, pos, clear(a)). 
-original_head(4, robot, s(b,c)). original_body(4, pos, clear(b)). original_body(4, pos, table(b)). original_body(4, neg, clear(c)). % correct one original_body(4, pos, clear(c)).
+original_head(4, robot, s(b,c)). original_body(4, pos, clear(b)). original_body(4, pos, table(b)). original_body(4, pos, clear(c)). % correct one original_body(4, pos, clear(c)).
 original_head(5, robot, s(c,a)). original_body(5, pos, clear(c)). original_body(5, pos, table(c)). original_body(5, pos, clear(a)). 
 original_head(6, robot, s(c,b)). original_body(6, pos, clear(c)). original_body(6, pos, table(c)). original_body(6, pos, clear(b)). 
 original_head(7, robot, u(a,a)). original_body(7, pos, clear(a)). original_body(7, pos, on(a,a)). 
@@ -57,7 +56,7 @@ original_head(9, robot, u(a,c)). original_body(9, pos, clear(a)). original_body(
 original_head(10, robot, u(b,a)). original_body(10, pos, clear(b)). original_body(10, pos, on(b,a)). 
 original_head(11, robot, u(b,b)). original_body(11, pos, clear(b)). original_body(11, pos, on(b,b)). 
 original_head(12, robot, u(b,c)). original_body(12, pos, clear(b)). original_body(12, pos, on(b,c)).  
-original_head(13, robot, u(c,a)). original_body(13, pos, clear(c)). original_body(13, neg, on(c,a)). % correct one -- original_body(13, pos, on(c,a)).
+original_head(13, robot, u(c,a)). original_body(13, pos, clear(c)). original_body(13, pos, on(c,a)). % correct one -- original_body(13, pos, on(c,a)).
 original_head(14, robot, u(c,b)). original_body(14, pos, clear(c)). original_body(14, pos, on(c,b)). 
 original_head(15, robot, u(c,c)). original_body(15, pos, clear(c)). original_body(15, pos, on(c,c)). 
 original_head(16, on(a,a)). original_body(16, pos, robot, s(a,a)). 
@@ -318,8 +317,11 @@ original_head(270, step(4)). original_body(270, pos, step(3)).
 legal_rule(1..15).
 old_rule(1..270).
 rule(1..270).
-goal(robot,100,J,T) :- true(on(a,b),J,T), true(on(b,c),J,T), program(J), tdom(T).
-goal(robot,0,J,T) :- not true(on(a,b),J,T), program(J), tdom(T).
+% goal(robot,100,J,T) :- true(on(a,b),J,T), true(on(b,c),J,T), program(J), tdom(T).
+goal(robot,100,J,T) :- true(on(a,c),J,T), true(on(b,c),J,T), program(J), tdom(T). % here is wrong, the target cannot be solved
+%goal(robot,0,J,T) :- not true(on(a,b),J,T), program(J), tdom(T).
+goal(robot,0,J,T) :- not true(on(a,c),J,T), program(J), tdom(T).
 goal(robot,0,J,T) :- not true(on(b,c),J,T), program(J), tdom(T).
 terminal(J,T) :- true(step(4),J,T), program(J), tdom(T).
-terminal(J,T) :- true(on(a,b),J,T), true(on(b,c),J,T), program(J), tdom(T).
+%terminal(J,T) :- true(on(a,b),J,T), true(on(b,c),J,T), program(J), tdom(T).
+terminal(J,T) :- true(on(a,c),J,T), true(on(b,c),J,T), program(J), tdom(T).
