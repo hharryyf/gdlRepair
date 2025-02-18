@@ -41,14 +41,14 @@ horizon = int(sys.argv[2])
 current = sys.argv[3]
 terminal = sys.argv[1].replace('.lp', '-termination.lp')
 quantifier = sys.argv[1].replace('.lp', '-quantifier.lp')
-files = optional + ' ' + strong_win_file + ' ' + terminal
+files = optional + ' ' + strong_win_file # + ' ' + terminal
 #files = optional +  ' ' + terminal
 
 bound = sys.argv[5]
 outfile = sys.argv[4]
 
 strong_winnability_encoding(inputfile, current, horizon, strong_win_file)
-termination_playability_fast(inputfile, horizon, terminal)
+#termination_playability_fast(inputfile, horizon, terminal)
 #termination_playability_slow(inputfile, terminal)
 build_quantifier(current, files, inputfile, quantifier)
 cmd = f'clingo --output=smodels encoding/repair-qbf-4.lp {inputfile} {files} {quantifier}  {bound} |  python qasp2qbf.py | lp2normal2 | lp2acyc | lp2sat | python qasp2qbf.py --cnf2qdimacs > {outfile}'

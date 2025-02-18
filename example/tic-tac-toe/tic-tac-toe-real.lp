@@ -40,7 +40,7 @@ original_head(18, oplayer, mark(3,2)). original_body(18, pos, control(oplayer)).
 original_head(19, xplayer, mark(3,3)). original_body(19, pos, control(xplayer)). original_body(19, neg, cell(3,3,x)). original_body(19, neg, cell(3,3,o)). 
 original_head(20, oplayer, mark(3,3)). original_body(20, pos, control(oplayer)). original_body(20, neg, cell(3,3,x)). original_body(20, neg, cell(3,3,o)). 
 original_head(21, control(xplayer)). original_body(21, pos, control(oplayer)). 
-original_head(22, control(oplayer)). original_body(22, pos, control(xplayer)). 
+original_head(22, control(xplayer)). original_body(22, pos, control(xplayer)). 
 original_head(23, cell(1,1,x)). original_body(23, pos, xplayer, mark(1,1)). original_body(23, neg, cell(1,1,x)). original_body(23, neg, cell(1,1,o)). 
 original_head(24, cell(1,1,o)). original_body(24, pos, oplayer, mark(1,1)). original_body(24, neg, cell(1,1,x)). original_body(24, neg, cell(1,1,o)). 
 original_head(25, cell(1,1,x)). original_body(25, pos, cell(1,1,x)). 

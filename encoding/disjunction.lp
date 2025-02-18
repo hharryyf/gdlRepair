@@ -1,20 +1,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% encoding
-polar(pos;neg).
 opp(pos,neg). opp(neg,pos).
-atom(fluent, F) :- base(F). atom(act, (R,A)) :- input(R, A).
-o_body(I,P,fluent,F) :- original_body(I,P,F). o_body(I,P,act,(R,A)) :- original_body(I,P,R,A).
-o_head(I,fluent,F) :- original_head(I,F). o_head(I,act,(R,A)) :- original_head(I,R,A).
-atom(fluent, F) :- base(F). atom(act, (R,A)) :- input(R, A).
-tdom(act, T) :- tdom(T), tdom(T+1). tdom(fluent, T) :- tdom(T).
-
-%head(I,T,F) :- o_head(I,T,F). body(I,P,T,F) :- o_body(I,P,T,F).
 
 % universal variables
 d_true(F, T, P) : polar(P) :- tdom(fluent,T), base(F).
 d_terminated(T, P) : polar(P) :- tdom(fluent,T).
 d_does(R, M, T, P) : polar(P) :- input(R, M), tdom(fluent,T), role(R).
 d_legal(R, M, T, P) : polar(P) :- input(R, M), tdom(fluent,T).
-d_activated_h(I,P,TYPE,F,T,E) : polar(E) :- rule(I), atom(TYPE,F), polar(P), tdom(fluent, T).
+d_activated_h(I,P,TYPE,F,T,E) : polar(E) :- rule(I), atom(TYPE,F), polar(P), tdom(fluent, T). % 
+% d_activated_h(I,P,TYPE,F,T,E) : polar(E) :- body(I,P,TYPE,F,T). % 
+
 d_activated_r(I,T,E) : polar(E) :- rule(I), tdom(fluent, T).
 has_legal(R, T, P) : polar(P) :- tdom(fluent,T), role(R).
 no_legal(T, P) : polar(P) :- tdom(fluent,T), role(R).
@@ -28,13 +22,14 @@ no_legal(T, P) :- w, tdom(fluent,T), polar(P).
 d_true(F, T, P) :- w, tdom(fluent,T), base(F), polar(P).
 d_activated_h(I,P,TYPE,F,T,E) :- w, polar(E), rule(I), atom(TYPE,F), polar(P), tdom(fluent, T).
 d_activated_r(I,T,E) :- w, polar(E), rule(I), tdom(fluent, T).
-%:- not w.
+:- not w.
 
 %%%%%%%%% state manipulation
 w :- role(R), tdom(fluent,T), d_terminated(T, neg), d_does(R, M, T, neg) : input(R, M). % when the game is not terminating, the player plays no move
 w :- tdom(fluent,T), d_terminated(T, pos), d_does(R, M, T, pos). % when the game terminates, the player plays a move
 w :- d_does(R, M, T, neg), d_does(R, M, T, pos). % the player both play a move and not play a move
-w :- 2 { d_does(R, M, T, pos) }, tdom(fluent,T), role(R). % the player plays more than 2 moves
+w :- d_does(R, M1, T, pos), d_does(R, M2, T, pos), M1 < M2, tdom(fluent,T), role(R). % the player plays more than 2 moves
+%w :- 2 { d_does(R, M, T, pos) }, tdom(fluent,T), role(R). % the player plays more than 2 moves
 w :- d_does(R, M, T, pos), d_legal(R, M, T, neg), d_terminated(T, neg), no_legal(T, neg). % the player plays an illegal move
 w :- d_terminal(T, pos), no_legal(T, neg). % the game must terminate and the player must always have legal actions along the way
 
@@ -73,6 +68,6 @@ w :- d_true(F,T+1,pos), 0 {head(I,fluent,F) : rule(I)} 0, tdom(act,T).
 
 %#show d_legal/4.
 %#show.
-#show d_does(R,M,T) : d_does(R,M,T,pos).
+%#show d_does(R,M,T) : d_does(R,M,T,pos).
 %#show d_true/3.
 #show w/0.

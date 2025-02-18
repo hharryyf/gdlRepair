@@ -18,7 +18,7 @@ remove_head(I) :- 1 {deleted(I) ; update_head(I)}, rule(I).
 add_head(I,TYPE,F) :- head(I,TYPE,F), not o_head(I,TYPE,F).
 %%%%%%%%%%%%%%%%%% body
 {remove_body(I,P,TYPE,F)} :- o_body(I,P,TYPE,F), not deleted(I).
-{add_body(I,P,act,F)} :- polar(P), not o_body(I,P,act,F), htype(I,fluent), atom(TYPE,F), not deleted(I).
+{add_body(I,P,act,F)} :- polar(P), not o_body(I,P,act,F), htype(I,fluent), atom(act,F), not deleted(I).
 {add_body(I,P,fluent,F)} :-atom(fluent,F), polar(P), not o_body(I,P,fluent,F), htype(I, TYPE), not deleted(I).
 
 body(I,P,TYPE,F) :- add_body(I,P,TYPE,F).

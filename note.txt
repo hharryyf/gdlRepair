@@ -136,3 +136,13 @@ cost = 1: bloqqer      20150.75s  preprocessing + caqe 230.75s solving -> remove
                                           + depqbf TIMEOUT 
           QRATPRE++ BCE  170.12s      preprocessing + caqe OUT OF MEMORY
                                           + depqbf TIMEOUT
+
+
+next(x1) :- true(x1e). <- remove body cost = 1
+next(x3) :- true(x3e).
+next(x2) :- true(x2e).
+next(py1) :- does(y1,pos).
+next(py2) :- does(y2,pos),.
+terminal :- true(x1), true(py1).
+terminal :- not true(x1), true(py2).
+terminal :- not true(x2), true(py2).
