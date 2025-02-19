@@ -14,19 +14,22 @@ for b in block:
 
 for b in block:
     for c in block:
-        print(f'base(on({b},{c})).')
+        if b != c:
+            print(f'base(on({b},{c})).')
 
 for i in range(1, 5):
     print(f'base(step({i})).')
 
 for b in block:
     for c in block:
-        print(f'input(robot,s({b},{c})).')
+        if b != c:
+            print(f'input(robot,s({b},{c})).')
 
 
 for b in block:
     for c in block:
-        print(f'input(robot,u({b},{c})).')
+        if b != c:
+            print(f'input(robot,u({b},{c})).')
 
 print('init(clear(b)).')
 print('init(clear(c)).')
@@ -74,58 +77,65 @@ for x in block:
             print_legal_rule('robot', f's({x},{y})', [f'+clear({x})', f'+table({x})', f'+clear({y})'])
 
 for x in block:
-    for y in block: 
-        print_legal_rule('robot', f'u({x},{y})', [f'+clear({x})', f'+on({x},{y})'])
+    for y in block:
+        if x != y: 
+            print_legal_rule('robot', f'u({x},{y})', [f'+clear({x})', f'+on({x},{y})'])
 
 for x in block:
     for y in block:
-        print_next_rule(f'on({x},{y})', [f'+d robot|s({x},{y})'])
+        if x != y:
+            print_next_rule(f'on({x},{y})', [f'+d robot|s({x},{y})'])
 
 for x in block:
     for y in block:
         for u in block:
             for v in block:
-                print_next_rule(f'on({x},{y})', [f'+d robot|s({u},{v})', f'+f on({x},{y})'])
+                if u != v and x != y:
+                    print_next_rule(f'on({x},{y})', [f'+d robot|s({u},{v})', f'+f on({x},{y})'])
 
 for x in block:
     for u in block:
         for v in block:
-            if u != x:
+            if u != x and u != v:
                 print_next_rule(f'table({x})', [f'+d robot|s({u},{v})', f'+f table({x})'])
 
 for y in block:
     for u in block:
         for v in block:
-            if v != y:
+            if v != y and u != v:
                 print_next_rule(f'clear({y})', [f'+d robot|s({u},{v})', f'+f clear({y})'])
 
 for x in block:
     for y in block:
         for u in block:
             for v in block:
-                if u != x:
+                if u != x and u != v and x != y:
                     print_next_rule(f'on({x},{y})', [f'+d robot|u({u},{v})', f'+f on({x},{y})'])
 
 
 for x in block:
     for y in block:
-        print_next_rule(f'table({x})', [f'+d robot|u({x},{y})'])
+        if x != y:
+            print_next_rule(f'table({x})', [f'+d robot|u({x},{y})'])
 
 
 for x in block:
     for y in block:
-        print_next_rule(f'clear({y})', [f'+d robot|u({x},{y})'])
+        if x != y:
+            print_next_rule(f'clear({y})', [f'+d robot|u({x},{y})'])
 
 
 for x in block:
     for u in block:
         for v in block:
-            print_next_rule(f'table({x})', [f'+d robot|u({u},{v})', f'+f table({x})'])
+            if u != v:
+                print_next_rule(f'table({x})', [f'+d robot|u({u},{v})', f'+f table({x})'])
 
 for x in block:
     for u in block:
         for v in block:
-            print_next_rule(f'clear({x})', [f'+d robot|u({u},{v})', f'+f clear({x})'])
+            if u != v:
+                print_next_rule(f'clear({x})', [f'+d robot|u({u},{v})', f'+f clear({x})'])
 
 
 for i in range(2, 5):

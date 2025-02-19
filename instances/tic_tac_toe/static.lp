@@ -1,3 +1,5 @@
+% tic-tac-toe with error
+% o can never take control
 tdom(1..10).
 role(xplayer).
 role(oplayer).
@@ -9,15 +11,6 @@ input(xplayer, mark(1..3,1..3)).
 input(oplayer, mark(1..3,1..3)).
 input(xplayer, noop).
 input(oplayer, noop).
-init(cell(1,1,b)).
-init(cell(1,2,b)).
-init(cell(1,3,b)).
-init(cell(2,1,b)).
-init(cell(2,2,b)).
-init(cell(2,3,b)).
-init(cell(3,1,b)).
-init(cell(3,2,b)).
-init(cell(3,3,b)).
 init(control(xplayer)).
 legal_rule(1..20).
 old_rule(1..58).

@@ -26,17 +26,19 @@ d_activated_r(I,T,E) :- w, polar(E), rule(I), tdom(fluent, T).
 
 %%%%%%%%% state manipulation
 w :- role(R), tdom(fluent,T), d_terminated(T, neg), d_does(R, M, T, neg) : input(R, M). % when the game is not terminating, the player plays no move
+%w :- role(R), tdom(fluent,T), d_terminated(T, neg), no_legal(T, neg), d_does(R, M, T, neg) : input(R, M). % ---
 w :- tdom(fluent,T), d_terminated(T, pos), d_does(R, M, T, pos). % when the game terminates, the player plays a move
+%w :- tdom(fluent,T), no_legal(T, pos), d_does(R, M, T, pos). % ---
 w :- d_does(R, M, T, neg), d_does(R, M, T, pos). % the player both play a move and not play a move
 w :- d_does(R, M1, T, pos), d_does(R, M2, T, pos), M1 < M2, tdom(fluent,T), role(R). % the player plays more than 2 moves
-%w :- 2 { d_does(R, M, T, pos) }, tdom(fluent,T), role(R). % the player plays more than 2 moves
+w :- 2 { d_does(R, M, T, pos) }, tdom(fluent,T), role(R). % the player plays more than 2 moves
 w :- d_does(R, M, T, pos), d_legal(R, M, T, neg), d_terminated(T, neg), no_legal(T, neg). % the player plays an illegal move
 w :- d_terminal(T, pos), no_legal(T, neg). % the game must terminate and the player must always have legal actions along the way
 
 w :- has_legal(R, T, neg), d_legal(R, M, T, pos).
 w :- has_legal(R, T, pos), d_legal(R, M, T, neg) : input(R, M).
 w :- no_legal(T, neg), no_legal(T-1, pos), tdom(act,T-1).
-w :- no_legal(T, neg), d_terminated(T, neg), has_legal(R, T, neg) : role(R).
+w :- no_legal(T, neg), d_terminated(T, neg), has_legal(R, T, neg).
 w :- no_legal(1, pos), d_terminated(1, pos).
 w :- no_legal(1, pos), has_legal(R, 1, pos) : role(R).
 w :- no_legal(T, pos), no_legal(T-1, neg), tdom(act,T-1), d_terminated(T, pos).
