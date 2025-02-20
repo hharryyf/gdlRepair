@@ -4,8 +4,8 @@ base(step(1..21)).
 base(cell(1..3,1..3,1..8)).
 base(cell(1..3,1..3,b)).
 input(player, move(1..3,1..3)).
-init(cell(1,1,4)).
-init(cell(1,2,3)).
+init(cell(1,1,3)).
+init(cell(1,2,4)).
 init(cell(1,3,1)).
 init(cell(2,1,2)).
 init(cell(2,2,6)).
