@@ -176,6 +176,7 @@ def run():
             models += 1
             model = " ".join([str(x) for x in m.symbols(shown=True)])
             print(ANSWER.format(models, model))
+            print(f"Optimization: {" ".join([str(x) for x in m.cost])}")
         print(handle.get())
 
 
