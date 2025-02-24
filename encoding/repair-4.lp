@@ -9,12 +9,10 @@ num_old_rules(N) :- N = #count{I : old_rule(I)}.
 new_rule(M+1..M+N) :- num_old_rules(M), num_new_rules(N).
 1 {head(I,TYPE,F) : atom(TYPE,F) } 1:- new_rule(I).
 %%%%%%%%%%%%%%%%%% deal with old heads
-1 {keep_head(I) ; update_head(I); deleted(I)} 1 :- old_rule(I).
-head(I,TYPE,F) :- keep_head(I), o_head(I,TYPE,F).
-1 {head(I,TYPE,F) : atom(TYPE,F), not o_head(I,TYPE,F)} 1 :- update_head(I), htype(I,TYPE).
+{deleted(I)} :- old_rule(I).
+1 {head(I,TYPE,F) : atom(TYPE,F)} 1 :- htype(I,TYPE), old_rule(I), not deleted(I).
 htype(I,TYPE) :- head(I,TYPE,F), not old_rule(I). % new htype rule
 htype(I,TYPE) :- o_head(I,TYPE,F).
-%remove_head(I) :- 1 {deleted(I) ; update_head(I)}, rule(I).
 add_head(I,TYPE,F) :- head(I,TYPE,F), new_rule(I).
 replace_head(I,TYPE,F) :- old_rule(I), head(I,TYPE,F), not o_head(I,TYPE,F).
 %%%%%%%%%%%%%%%%%% body
