@@ -14,8 +14,9 @@ head(I,TYPE,F) :- keep_head(I), o_head(I,TYPE,F).
 1 {head(I,TYPE,F) : atom(TYPE,F), not o_head(I,TYPE,F)} 1 :- update_head(I), htype(I,TYPE).
 htype(I,TYPE) :- head(I,TYPE,F), not old_rule(I). % new htype rule
 htype(I,TYPE) :- o_head(I,TYPE,F).
-remove_head(I) :- 1 {deleted(I) ; update_head(I)}, rule(I).
-add_head(I,TYPE,F) :- head(I,TYPE,F), not o_head(I,TYPE,F).
+%remove_head(I) :- 1 {deleted(I) ; update_head(I)}, rule(I).
+add_head(I,TYPE,F) :- head(I,TYPE,F), new_rule(I).
+replace_head(I,TYPE,F) :- old_rule(I), head(I,TYPE,F), not o_head(I,TYPE,F).
 %%%%%%%%%%%%%%%%%% body
 {remove_body(I,P,TYPE,F)} :- o_body(I,P,TYPE,F), not deleted(I).
 {add_body(I,P,act,F)} :- polar(P), not o_body(I,P,act,F), htype(I,fluent), atom(act,F), not deleted(I).
@@ -44,8 +45,9 @@ true(F, J, 1) :- init(F), base(F), program(J).
 #show does/4.
 #show add_body/4.
 #show remove_body/4.
-#show remove_head/1.
+%#show remove_head/1.
 #show add_head/3.
+#show replace_head/3.
 #show deleted/1.
 #show num_new_rules/1.
 #show new_rule/1.

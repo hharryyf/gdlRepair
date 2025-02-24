@@ -146,3 +146,9 @@ next(py2) :- does(y2,pos),.
 terminal :- true(x1), true(py1).
 terminal :- not true(x1), true(py2).
 terminal :- not true(x2), true(py2).
+
+1 add 
+1 remove b 
+l + 1 delte rule 
+2l replace head 
+add head 1 
