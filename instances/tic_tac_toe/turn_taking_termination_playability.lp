@@ -26,9 +26,9 @@ true(F, tl, 1) :- init(F), base(F), program(tl).
 %bad_control(tl, 2) :- not true(control(x), tl, 2), not true(control(o), t%bad_cell(tl, T) :- true(cell(X,Y,x), tl, T), true(cell(X,Y,o), tl, T), tdom(fluent, T), base(cell(X,Y,x)).
 % bad_control(tl, T+1) :- true(control(xplayer), tl, T), not true(control(oplayer), tl, T+1), tdom(fluent, T+1).
 % bad_control(tl, T+1) :- true(control(oplayer), tl, T), not true(control(xplayer), tl, T+1), tdom(fluent, T+1).
-% bad_control(tl, T) :- true(control(xplayer), tl, T), true(control(oplayer), tl, T), tdom(fluent, T), not terminated(tl, T), not no_legal(T).
-% bad_control(tl, T) :- not true(control(xplayer), tl, T), not true(control(oplayer), tl, T), tdom(fluent, T), not terminated(tl, T), not no_legal(T).
-% bad_control(tl, T+1) :- bad_control(tl, T), tdom(act, T).
+bad_control(tl, T) :- true(control(xplayer), tl, T), true(control(oplayer), tl, T), tdom(fluent, T), not terminated(tl, T), not no_legal(T).
+bad_control(tl, T) :- not true(control(xplayer), tl, T), not true(control(oplayer), tl, T), tdom(fluent, T), not terminated(tl, T), not no_legal(T).
+bad_control(tl, T+1) :- bad_control(tl, T), tdom(act, T).
 %bad_cell(tl, T+1) :- bad_cell(tl, T), tdom(act, T).
 
 has_legal(R, tl, T) :- legal(R, M, tl, T).
@@ -42,8 +42,8 @@ terminated(tl,T) :- terminated(tl,T-1), tdom(T).
 :- does(P,M,tl,T), not legal(P,M,tl,T), not no_legal(T).
 
 % existential and universal players must take a move at its turn
-1 {does(P,M,tl,T) : input(P, M)} 1 :- not terminated(tl,T), tdom(act,T), role(P), not no_legal(T).
+1 {does(P,M,tl,T) : input(P, M)} 1 :- not terminated(tl,T), tdom(act,T), role(P), not no_legal(T), not bad_control(tl, T).
 %:- terminated(tl,T), does(P,M,tl,T).
 % game must terminate
-:- terminated(tl,T), not no_legal(T).
+:- terminated(tl,T), not no_legal(T), not bad_control(tl, T).
 

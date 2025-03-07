@@ -61,10 +61,6 @@ for i in range(1, 4):
         print_legal_rule('xplayer', f'mark({i},{j})', ['+control(xplayer)', f'-cell({i},{j},x)', f'-cell({i},{j},o)'])
         print_legal_rule('oplayer', f'mark({i},{j})', ['+control(oplayer)', f'-cell({i},{j},x)', f'-cell({i},{j},o)'])
 
-print_next_rule('control(xplayer)', ['+f control(oplayer)'])
-print_next_rule('control(oplayer)', ['+f control(xplayer)'])
-
-
 for i in range(1, 4):
     for j in range(1, 4):
         print_next_rule(f'cell({i},{j},x)', [f'+d xplayer|mark({i},{j})', f'-f cell({i},{j},x)', f'-f cell({i},{j},o)'])
@@ -83,6 +79,9 @@ for i in range(1, 4):
 #                if (i, j) != (k, l):
 #                    print_next_rule(f'cell({i},{j},b)', [f'+f cell({i},{j},b)', f'+d xplayer|mark({k},{l})'])
 #                    print_next_rule(f'cell({i},{j},b)', [f'+f cell({i},{j},b)', f'+d oplayer|mark({k},{l})'])
+
+print_next_rule('control(xplayer)', ['+f control(oplayer)'])
+print_next_rule('control(oplayer)', ['+f control(xplayer)'])
 
 
 print(f'legal_rule(1..{legal}).')

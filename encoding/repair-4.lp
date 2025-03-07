@@ -49,4 +49,4 @@ true(F, J, 1) :- init(F), base(F), program(J).
 #show deleted/1.
 #show num_new_rules/1.
 #show new_rule/1.
-
+%#show true(control(R),J,T) : true(control(R),J,T), program(J), tdom(T).
