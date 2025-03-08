@@ -37,7 +37,7 @@ init(table(b)).
 init(step(1)).
 legal_rule(1..12).
 old_rule(1..153).
-rule(1..153).
+rule(1..154).
 goal(robot,100,J,T) :- true(on(a,c),J,T), true(on(b,c),J,T), program(J), tdom(T).
 goal(robot,0,J,T) :- not true(on(a,c),J,T), program(J), tdom(T).
 goal(robot,0,J,T) :- not true(on(b,c),J,T), program(J), tdom(T).
