@@ -21,7 +21,7 @@ replace_head(I,TYPE,F) :- old_rule(I), head(I,TYPE,F), not o_head(I,TYPE,F).
 {add_body(I,P,fluent,F)} :-atom(fluent,F), polar(P), not o_body(I,P,fluent,F), htype(I, TYPE), not deleted(I).
 
 body(I,P,TYPE,F) :- add_body(I,P,TYPE,F).
-body(I,P,TYPE,F) :- o_body(I,P,TYPE,F), not remove_body(I,P,TYPE,F).
+body(I,P,TYPE,F) :- o_body(I,P,TYPE,F), not remove_body(I,P,TYPE,F), not deleted(I).
 
 :- body(I,pos,fluent,F), body(I,neg,fluent,F).
 :- body(I,pos,act,(R,A1)), body(I,neg,act, (R,A2)).

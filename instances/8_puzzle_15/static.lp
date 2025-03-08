@@ -18,7 +18,7 @@ init(cell(3,3,5)).
 init(step(1)).
 legal_rule(1..24).
 old_rule(1..1583).
-rule(1..1583).
+rule(1..1584).
 goal(player, 100, J, T) :- true(cell(1,1,1), J, T), true(cell(1,2,2), J, T), true(cell(1,3,3), J, T), true(cell(2,1,4), J, T), true(cell(2,2,5), J, T), true(cell(2,3,6), J, T), true(cell(3,1,7), J, T), true(cell(3,2,8), J, T), true(cell(3,3,b), J, T), program(J), tdom(T).
 goal(player, 0, J, T) :- not goal(player, 100, J, T), tdom(T), program(J).
 terminal(J, T) :- goal(player, 100, J, T), program(J), tdom(T).
