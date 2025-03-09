@@ -3,11 +3,17 @@ o_body(I,P,fluent,F) :- original_body(I,P,F). o_body(I,P,act,(R,A)) :- original_
 o_head(I,fluent,F) :- original_head(I,F). o_head(I,act,(R,A)) :- original_head(I,R,A).
 atom(fluent, F) :- base(F). atom(act, (R,A)) :- input(R, A).
 tdom(act, T) :- tdom(T), tdom(T+1). tdom(fluent, T) :- tdom(T).
-%%%%%%%%%%%%%%%%%%% deal with new heads
+% %%%%%%%%%%%%%%%%%%% deal with new heads
+% num_old_rules(N) :- N = #count{I : old_rule(I)}.
+% 1 {num_new_rules(0..N)} 1 :- N = #count{I:rule(I), not old_rule(I)}.
+% new_rule(M+1..M+N) :- num_old_rules(M), num_new_rules(N).
+% 1 {head(I,TYPE,F) : atom(TYPE,F) } 1:- new_rule(I).
+
 num_old_rules(N) :- N = #count{I : old_rule(I)}.
-1 {num_new_rules(0..N)} 1 :- N = #count{I:rule(I), not old_rule(I)}.
+num_new_rules(N) :- N = #count{I:rule(I), not old_rule(I)}.
 new_rule(M+1..M+N) :- num_old_rules(M), num_new_rules(N).
-1 {head(I,TYPE,F) : atom(TYPE,F) } 1:- new_rule(I).
+0 {head(I,TYPE,F) : atom(TYPE,F)} 1:- new_rule(I).
+
 %%%%%%%%%%%%%%%%%% deal with old heads
 {deleted(I)} :- old_rule(I).
 1 {head(I,TYPE,F) : atom(TYPE,F)} 1 :- htype(I,TYPE), old_rule(I), not deleted(I).
@@ -49,4 +55,5 @@ true(F, J, 1) :- init(F), base(F), program(J).
 #show deleted/1.
 #show num_new_rules/1.
 #show new_rule/1.
+%#show dummy/1.
 %#show true(control(R),J,T) : true(control(R),J,T), program(J), tdom(T).
