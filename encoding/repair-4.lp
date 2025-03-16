@@ -33,15 +33,25 @@ body(I,P,TYPE,F) :- o_body(I,P,TYPE,F), not remove_body(I,P,TYPE,F), not deleted
 :- body(I,pos,act,(R,A1)), body(I,neg,act, (R,A2)).
 :- body(I,pos,act,(R,A1)), body(I,pos,act, (R,A2)), A1 < A2.
 
-activated_h(I,P,TYPE,H,J,T) :- body(I,P,TYPE,H), tdom(TYPE,T), program(J), true(H,J,T) : TYPE=fluent, P=pos;
-                                                                           not true(H,J,T) : TYPE=fluent, P=neg;
-                                                                           does(R,A,J,T) : TYPE=act,H=(R,A), P=pos;
-                                                                           not does(R,A,J,T) : TYPE=act,H=(R,A), P=neg.
-activated_h(I,P,TYPE,H,J,T) :- tdom(TYPE,T), program(J), rule(I), polar(P), atom(TYPE,H), not body(I,P,TYPE,H).
+
+ferr(I,J,T) :- body(I,pos,fluent,F), tdom(fluent,T), program(J), not true(F,J,T).
+ferr(I,J,T) :- body(I,neg,fluent,F), tdom(fluent,T), program(J), true(F,J,T).
+aerr(I,J,T) :- body(I,pos,act,(R,A)), tdom(act,T), program(J), not does(R,A,J,T).
+aerr(I,J,T) :- body(I,neg,act,(R,A)), tdom(act,T), program(J), does(R,A,J,T).
+
+legal(R,A,J,T) :- program(J), tdom(fluent,T), head(I,act,(R,A)), not ferr(I,J,T).
+true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  not ferr(I,J,T),  not aerr(I,J,T).
+
+
+% activated_h(I,P,TYPE,H,J,T) :- body(I,P,TYPE,H), tdom(TYPE,T), program(J), true(H,J,T) : TYPE=fluent, P=pos;
+%                                                                            not true(H,J,T) : TYPE=fluent, P=neg;
+%                                                                            does(R,A,J,T) : TYPE=act,H=(R,A), P=pos;
+%                                                                            not does(R,A,J,T) : TYPE=act,H=(R,A), P=neg.
+% activated_h(I,P,TYPE,H,J,T) :- tdom(TYPE,T), program(J), rule(I), polar(P), atom(TYPE,H), not body(I,P,TYPE,H).
 
 % generate the legal rule and the next rule
-legal(R,A,J,T) :- program(J), tdom(fluent,T), head(I,act,(R,A)), activated_h(I,P,fluent,F,J,T) : atom(fluent,F), polar(P).
-true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  activated_h(I,P,TYPE,H,J,T) : atom(TYPE,H), polar(P).
+% legal(R,A,J,T) :- program(J), tdom(fluent,T), head(I,act,(R,A)), activated_h(I,P,fluent,F,J,T) : atom(fluent,F), polar(P).
+% true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  activated_h(I,P,TYPE,H,J,T) : atom(TYPE,H), polar(P).
 
 % init
 true(F, J, 1) :- init(F), base(F), program(J).

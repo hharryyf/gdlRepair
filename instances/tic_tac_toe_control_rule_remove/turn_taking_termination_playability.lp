@@ -3,17 +3,25 @@ atom(fluent, F) :- base(F). atom(act, (R,A)) :- input(R, A).
 tdom(act, T) :- tdom(T), tdom(T+1). tdom(fluent, T) :- tdom(T).
 polar(pos;neg).
 
-activated_h(I,P,TYPE,H,tl,T) :- holds(body(I,P,TYPE,H)), tdom(TYPE,T), program(tl), true(H,tl,T) : TYPE=fluent, P=pos;
-                                                                           not true(H,tl,T) : TYPE=fluent, P=neg;
-                                                                           does(R,A,tl,T) : TYPE=act,H=(R,A), P=pos;
-                                                                           not does(R,A,tl,T) : TYPE=act,H=(R,A), P=neg.
-activated_h(I,P,TYPE,H,tl,T) :- tdom(TYPE,T), program(tl), rule(I), polar(P), atom(TYPE,H), not holds(body(I,P,TYPE,H)).
+% activated_h(I,P,TYPE,H,tl,T) :- holds(body(I,P,TYPE,H)), tdom(TYPE,T), program(tl), true(H,tl,T) : TYPE=fluent, P=pos;
+%                                                                            not true(H,tl,T) : TYPE=fluent, P=neg;
+%                                                                            does(R,A,tl,T) : TYPE=act,H=(R,A), P=pos;
+%                                                                            not does(R,A,tl,T) : TYPE=act,H=(R,A), P=neg.
+% activated_h(I,P,TYPE,H,tl,T) :- tdom(TYPE,T), program(tl), rule(I), polar(P), atom(TYPE,H), not holds(body(I,P,TYPE,H)).
 
 
 
-% generate the legal rule and the next rule
-legal(R,A,tl,T) :- program(tl), tdom(fluent,T), holds(head(I,act,(R,A))), activated_h(I,P,fluent,F,tl,T) : atom(fluent,F), polar(P).
-true(F,tl,T+1)  :- program(tl), tdom(act,T),    holds(head(I,fluent,F)),  activated_h(I,P,TYPE,H,tl,T) : atom(TYPE,H), polar(P).
+% % generate the legal rule and the next rule
+% legal(R,A,tl,T) :- program(tl), tdom(fluent,T), holds(head(I,act,(R,A))), activated_h(I,P,fluent,F,tl,T) : atom(fluent,F), polar(P).
+% true(F,tl,T+1)  :- program(tl), tdom(act,T),    holds(head(I,fluent,F)),  activated_h(I,P,TYPE,H,tl,T) : atom(TYPE,H), polar(P).
+
+ferr(I,J,T) :- holds(body(I,pos,fluent,F)), tdom(fluent,T), program(J), not true(F,J,T).
+ferr(I,J,T) :- holds(body(I,neg,fluent,F)), tdom(fluent,T), program(J), true(F,J,T).
+aerr(I,J,T) :- holds(body(I,pos,act,(R,A))), tdom(act,T), program(J), not does(R,A,J,T).
+aerr(I,J,T) :- holds(body(I,neg,act,(R,A))), tdom(act,T), program(J), does(R,A,J,T).
+
+legal(R,A,J,T) :- program(J), tdom(fluent,T), holds(head(I,act,(R,A))), not ferr(I,J,T).
+true(F,J,T+1)  :- program(J), tdom(act,T),    holds(head(I,fluent,F)),  not ferr(I,J,T),  not aerr(I,J,T).
 
 % init
 true(F, tl, 1) :- init(F), base(F), program(tl).
