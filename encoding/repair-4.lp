@@ -4,14 +4,8 @@ o_head(I,fluent,F) :- original_head(I,F). o_head(I,act,(R,A)) :- original_head(I
 atom(fluent, F) :- base(F). atom(act, (R,A)) :- input(R, A).
 tdom(act, T) :- tdom(T), tdom(T+1). tdom(fluent, T) :- tdom(T).
 % %%%%%%%%%%%%%%%%%%% deal with new heads
-% num_old_rules(N) :- N = #count{I : old_rule(I)}.
-% 1 {num_new_rules(0..N)} 1 :- N = #count{I:rule(I), not old_rule(I)}.
-% new_rule(M+1..M+N) :- num_old_rules(M), num_new_rules(N).
-% 1 {head(I,TYPE,F) : atom(TYPE,F) } 1:- new_rule(I).
 
-num_old_rules(N) :- N = #count{I : old_rule(I)}.
-num_new_rules(N) :- N = #count{I:rule(I), not old_rule(I)}.
-new_rule(M+1..M+N) :- num_old_rules(M), num_new_rules(N).
+new_rule(I) :- rule(I), not old_rule(I).
 0 {head(I,TYPE,F) : atom(TYPE,F)} 1:- new_rule(I).
 
 %%%%%%%%%%%%%%%%%% deal with old heads
@@ -43,15 +37,6 @@ legal(R,A,J,T) :- program(J), tdom(fluent,T), head(I,act,(R,A)), not ferr(I,J,T)
 true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  not ferr(I,J,T),  not aerr(I,J,T).
 
 
-% activated_h(I,P,TYPE,H,J,T) :- body(I,P,TYPE,H), tdom(TYPE,T), program(J), true(H,J,T) : TYPE=fluent, P=pos;
-%                                                                            not true(H,J,T) : TYPE=fluent, P=neg;
-%                                                                            does(R,A,J,T) : TYPE=act,H=(R,A), P=pos;
-%                                                                            not does(R,A,J,T) : TYPE=act,H=(R,A), P=neg.
-% activated_h(I,P,TYPE,H,J,T) :- tdom(TYPE,T), program(J), rule(I), polar(P), atom(TYPE,H), not body(I,P,TYPE,H).
-
-% generate the legal rule and the next rule
-% legal(R,A,J,T) :- program(J), tdom(fluent,T), head(I,act,(R,A)), activated_h(I,P,fluent,F,J,T) : atom(fluent,F), polar(P).
-% true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  activated_h(I,P,TYPE,H,J,T) : atom(TYPE,H), polar(P).
 
 % init
 true(F, J, 1) :- init(F), base(F), program(J).
@@ -59,11 +44,6 @@ true(F, J, 1) :- init(F), base(F), program(J).
 #show does/4.
 #show add_body/4.
 #show remove_body/4.
-%#show remove_head/1.
 #show add_head/3.
 #show replace_head/3.
 #show deleted/1.
-#show num_new_rules/1.
-#show new_rule/1.
-%#show dummy/1.
-%#show true(control(R),J,T) : true(control(R),J,T), program(J), tdom(T).

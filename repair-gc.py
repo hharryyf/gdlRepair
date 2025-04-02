@@ -24,6 +24,6 @@ check = '{' + f'{unsat},' + f'instances/{game}/static.lp' + '}'
 if sys.argv[3] == 'usc':
     cmd = f'time python gc1.py {guess} -C {check} --opt-mode=opt{cost} -t {sys.argv[4]} --restart-on-model  --opt-strategy=usc,oll --opt-usc-shrink=inv'
 else:
-    cmd = f'time python gc1.py {guess} -C {check} --opt-mode=opt{cost} -t {sys.argv[4]} --restart-on-model  --opt-strategy=bb,dec'
+    cmd = f'time python gc1.py --binary {guess} -C {check} --opt-mode=opt{cost} -t {sys.argv[4]} --restart-on-model  --opt-strategy=bb,dec'
 
 os.system(f'bash -c "{cmd}"')
