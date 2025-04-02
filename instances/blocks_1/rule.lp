@@ -1,14 +1,14 @@
 original_head(1, robot, s(a,b)). original_body(1, pos, clear(a)). original_body(1, pos, table(a)). original_body(1, pos, clear(b)). 
 original_head(2, robot, s(a,c)). original_body(2, pos, clear(a)). original_body(2, pos, table(a)). original_body(2, pos, clear(c)). 
 original_head(3, robot, s(b,a)). original_body(3, pos, clear(b)). original_body(3, pos, table(b)). original_body(3, pos, clear(a)). 
-original_head(4, robot, s(b,c)). original_body(4, pos, clear(b)). original_body(4, pos, table(b)). original_body(4, pos, clear(c)).  
+original_head(4, robot, s(b,c)). original_body(4, pos, clear(b)). original_body(4, pos, table(b)). original_body(4, pos, clear(c)). 
 original_head(5, robot, s(c,a)). original_body(5, pos, clear(c)). original_body(5, pos, table(c)). original_body(5, pos, clear(a)). 
 original_head(6, robot, s(c,b)). original_body(6, pos, clear(c)). original_body(6, pos, table(c)). original_body(6, pos, clear(b)). 
 original_head(7, robot, u(a,b)). original_body(7, pos, clear(a)). original_body(7, pos, on(a,b)). 
 original_head(8, robot, u(a,c)). original_body(8, pos, clear(a)). original_body(8, pos, on(a,c)). 
 original_head(9, robot, u(b,a)). original_body(9, pos, clear(b)). original_body(9, pos, on(b,a)). 
-original_head(10, robot, u(b,c)). original_body(10, pos, clear(b)). original_body(10, pos, on(b,c)).  
-original_head(11, robot, u(c,a)). original_body(11, pos, clear(c)). original_body(11, pos, on(c,a)).  
+original_head(10, robot, u(b,c)). original_body(10, pos, clear(b)). original_body(10, pos, on(b,c)). 
+original_head(11, robot, u(c,a)). original_body(11, pos, clear(c)). original_body(11, pos, on(c,a)). original_body(11, pos, on(c,b)). % add a dummy atom
 original_head(12, robot, u(c,b)). original_body(12, pos, clear(c)). original_body(12, pos, on(c,b)). 
 original_head(13, on(a,b)). original_body(13, pos, robot, s(a,b)). 
 original_head(14, on(a,c)). original_body(14, pos, robot, s(a,c)). 
@@ -16,7 +16,7 @@ original_head(15, on(b,a)). original_body(15, pos, robot, s(b,a)).
 original_head(16, on(b,c)). original_body(16, pos, robot, s(b,c)). 
 original_head(17, on(c,a)). original_body(17, pos, robot, s(c,a)). 
 original_head(18, on(c,b)). original_body(18, pos, robot, s(c,b)). 
-original_head(19, on(a,b)). original_body(19, pos, robot, s(a,b)). original_body(19, pos, on(a,b)).  
+original_head(19, on(a,b)). original_body(19, pos, robot, s(a,b)). original_body(19, pos, on(a,b)). 
 original_head(20, on(a,b)). original_body(20, pos, robot, s(a,c)). original_body(20, pos, on(a,b)). 
 original_head(21, on(a,b)). original_body(21, pos, robot, s(b,a)). original_body(21, pos, on(a,b)). 
 original_head(22, on(a,b)). original_body(22, pos, robot, s(b,c)). original_body(22, pos, on(a,b)). 

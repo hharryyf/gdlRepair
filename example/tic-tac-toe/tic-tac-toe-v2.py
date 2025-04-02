@@ -16,10 +16,15 @@ print('input(oplayer, noop).')
 
 rid = 1
 legal = 0
+skip = 0
 
 def print_legal_rule(role:str, act:str, fluents:list):
     global rid
     global legal
+    global skip 
+    #if rid == 3 and skip == 0:
+    #    skip = 1
+    #    return
     print(f'original_head({rid}, {role}, {act}).', end = ' ')
     for fluent in fluents:
         if fluent[0] == '+':

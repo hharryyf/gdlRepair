@@ -12,9 +12,13 @@ if len(sys.argv) == 5:
 timelimit = int(sys.argv[3])
 cost = int(sys.argv[2])
 term = False
-if cost < 0:
+if cost < 0 and cost != -1:
     cost = cost * -1
     term = True
+if cost == -1:
+    cost = ''
+else:
+    cost = f',{cost}'
 if timelimit < 0:
     timelimit = ''
 else:
@@ -32,7 +36,7 @@ disj = 'instances/' +sys.argv[1] + '/disjunction.lp'
 print(f'Timelimit: {timelimit}')
 print(f'Number of threads: {numthread}')
 
-cmd = f'clingo {timelimit} -t {numthread} --opt-mode=opt,{cost} --restart-on-model encoding/repair-4.lp {bound} {rule} {static} {win}'
+cmd = f'clingo {timelimit} -t {numthread} --opt-mode=opt{cost} --restart-on-model --opt-strategy=bb,dec encoding/repair-4.lp {bound} {rule} {static} {win}'
 
 if term:
     cmd += ' '
