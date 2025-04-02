@@ -1,3 +1,5 @@
+# I copied this code from https://github.com/potassco/guess_and_check/
+
 # MIT License
 #
 # Copyright (c) 2017 Javier Romero
