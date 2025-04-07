@@ -54,6 +54,5 @@ original_head(53, cell(3,3,x)). original_body(53, pos, xplayer, mark(3,3)). orig
 original_head(54, cell(3,3,o)). original_body(54, pos, oplayer, mark(3,3)). original_body(54, neg, cell(3,3,x)). original_body(54, neg, cell(3,3,o)). 
 original_head(55, cell(3,3,x)). original_body(55, pos, cell(3,3,x)). 
 original_head(56, cell(3,3,o)). original_body(56, pos, cell(3,3,o)). 
-% here's the bug, accidently flip
-original_head(57, control(xplayer)). original_body(57, pos, control(xplayer)). 
-original_head(58, control(xplayer)). original_body(58, pos, control(oplayer)). 
+original_head(57, control(oplayer)). original_body(57, pos, control(xplayer)). 
+%original_head(58, control(xplayer)). original_body(58, pos, control(oplayer)). 
