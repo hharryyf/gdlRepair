@@ -9,3 +9,4 @@ terminated(J, T+1) :- terminated(J, T), tdom(fluent,T), program(J).
 :- 0 { terminated(J, T) : tdom(fluent,T) } 0, program(J).
 :- terminated(P, T), not terminated(P, T - 1), not goal(R, 100, P, T), weak_win(P,R).
 :- terminated(P, 1), not goal(R, 100, P, 1), weak_win(P,R).
+

@@ -12,7 +12,7 @@
 :~ add_body(I, P, R, A). [1@2,I,P,R,A,add]
 :~ remove_body(I, P, R, A). [1@2, I, P, R, A,remove]
 :~ add_head(I,R,A). [1@2,I,R,A,add_head]
-:~ replace_head(I,R,A), cost(I,N). [(2*N+1)@2,I,R,A,replace_head]
+:~ replace_head(I,R,A), cost(I,N). [(2*N+2)@2,I,R,A,replace_head]
 :~ deleted(I), cost(I,N). [(1+N)@2,I,remove]
 %:~ remove_head(I). [1,I,remove]
 

@@ -38,4 +38,14 @@ eta_4_1(1, 4) :- not terminal(1, 4).
 
 
 
+% program(3).
+% :- eta(3, 1).
+% eta(3, 1) :- eta_1(3, 1), eta_2(3, 1).
+% eta_1(3, 1) :- not terminal(3, 1).
+% eta_2(3, 1) :- terminal(3, 1).
+% eta_2(3, 1) :- eta_2_1(3, 2), eta_2_2(3, 2).
+% eta_2_1(3, T) :- legal(robot, u(c,a), 3, T), T >= 2, tdom(T).
+% eta_2_2(3, T) :- terminal(3, T), T >=2, tdom(T).
+% eta_2_2(3, T) :- tdom(T), not tdom(T+1), T >= 2.
+% eta_2_2(3, T) :- eta_2_1(3, T+1), eta_2_2(3, T+1), tdom(T+1), T >= 2.
 

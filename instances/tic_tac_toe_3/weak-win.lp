@@ -18,18 +18,18 @@ terminated(J, T) :- no_legal(J, T).
 % controlX cannot be true all the time
 % not terminal and X (true(control(x)) and X true(control(x))) ...
 % not terminal and X nest(true(control(x)), ^ , N-1)
-% program(3).
-% :- eta(3, 1).
-% eta(3, 1) :- eta_1(3, 1), eta_2(3, 1).
-% eta_1(3, 1) :- not terminal(3, 1).
-% eta_2(3, 1) :- terminal(3, 1).
-% eta_2(3, 1) :- no_legal(3, 1).
-% eta_2(3, 1) :- eta_2_1(3, 2), eta_2_2(3, 2).
-% eta_2_1(3, T) :- true(control(xplayer), 3, T), T >= 2, tdom(T).
-% eta_2_2(3, T) :- terminal(3, T), T >=2, tdom(T).
-% eta_2_2(3, T) :- no_legal(3, T), T >= 2, tdom(T).
-% eta_2_2(3, T) :- tdom(T), not tdom(T+1), T >= 2.
-% eta_2_2(3, T) :- eta_2_1(3, T+1), eta_2_2(3, T+1), tdom(T+1), T >= 2.
+program(3).
+:- eta(3, 1).
+eta(3, 1) :- eta_1(3, 1), eta_2(3, 1).
+eta_1(3, 1) :- not terminal(3, 1).
+eta_2(3, 1) :- terminal(3, 1).
+eta_2(3, 1) :- no_legal(3, 1).
+eta_2(3, 1) :- eta_2_1(3, 2), eta_2_2(3, 2).
+eta_2_1(3, T) :- true(control(xplayer), 3, T), T >= 2, tdom(T).
+eta_2_2(3, T) :- terminal(3, T), T >=2, tdom(T).
+eta_2_2(3, T) :- no_legal(3, T), T >= 2, tdom(T).
+eta_2_2(3, T) :- tdom(T), not tdom(T+1), T >= 2.
+eta_2_2(3, T) :- eta_2_1(3, T+1), eta_2_2(3, T+1), tdom(T+1), T >= 2.
 
 % #show eta_1/2.
 % #show eta_2/2.

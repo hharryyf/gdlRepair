@@ -41,7 +41,7 @@ true(F,J,T+1)  :- program(J), tdom(act,T),    head(I,fluent,F),  not ferr(I,J,T)
 % init
 true(F, J, 1) :- init(F), base(F), program(J).
 
-#show does/4.
+%#show does/4.
 #show add_body/4.
 #show remove_body/4.
 #show add_head/3.
